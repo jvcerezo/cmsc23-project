@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'ELBIgayan',
       initialRoute: '/',
       routes: {
-        '/': (context) => const OrganizationHomePage(), 
+        '/': (context) => OrganizationHomePage(), 
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

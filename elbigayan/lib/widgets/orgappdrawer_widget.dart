@@ -15,7 +15,6 @@ class OrganizationAppDrawer extends StatelessWidget {
         color: const Color(0xFFE8FFFF),
         child: Container(
           margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-          color: const Color(0xFFE8FFFF),
           child: ListView(padding: EdgeInsets.zero, children: [
             const SizedBox(
               height: 60,
