@@ -21,21 +21,14 @@ class MyApp extends StatelessWidget {
       title: 'Elbigayan',
       initialRoute: '/',
       debugShowCheckedModeBanner: false, 
-      title: 'ELBIgayan',
-      initialRoute: '/',
       routes: {
-        '/': (context) => OrganizationHomePage(), 
+        '/organization': (context) => const OrganizationHomePage(), 
       },
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-      ),
-      home: const SignInPage()
-    );
-  }
-}
         primarySwatch: Colors.blue,
       ),
+      home: const SignInPage()
     );
   }
 }
