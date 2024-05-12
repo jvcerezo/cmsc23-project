@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:elbigayan/widgets/organizationlist_widget.dart';
 
 class DonorHomePage extends StatefulWidget{
   const DonorHomePage({super.key});
@@ -14,7 +15,12 @@ class _DonorHomePageState extends State<DonorHomePage>{
     'Batong Malake Community Pantry',
     'Madre de amor Hospice Foundation',
     'Community Help Alternatives Inc',
-    'El danda Jeepney Drivers'
+    'El danda Jeepney Drivers',
+    'Piston Jeepney Drivers',
+    'UPLB Learning Resource Center',
+    'UPLB Red Cross Youth',
+    'UPLB Vendors',
+    'UPLB BARKada && CATropa'
   ];
 
   @override
@@ -44,6 +50,7 @@ class _DonorHomePageState extends State<DonorHomePage>{
                 style:defaultTextStyle,
               ),
               const SizedBox(height:20),
+              OrganizationList(OrganizationNames:orgNames)
             ],
           ),
         ),
