@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:elbigayan/widgets/organizationlist_widget.dart';
+import 'package:elbigayan/widgets/donorappdrawer_widget.dart';
 
 class DonorHomePage extends StatefulWidget{
   const DonorHomePage({super.key});
@@ -31,6 +32,7 @@ class _DonorHomePageState extends State<DonorHomePage>{
       fontWeight: FontWeight.bold,
     );
     return Scaffold(
+      drawer: const DonorAppDrawer(),
       appBar: AppBar(
         title: const Text(
           "Home",
