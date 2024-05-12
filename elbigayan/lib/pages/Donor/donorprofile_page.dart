@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:elbigayan/widgets/donorappdrawer_widget.dart';
+import 'package:elbigayan/widgets/donorProfile_widget.dart';
 
 class DonorProfilePage extends StatefulWidget{
   const DonorProfilePage({super.key});
@@ -30,11 +31,13 @@ class _DonorProfilePageState extends State<DonorProfilePage>{
       body:Container(
         margin:const EdgeInsets.fromLTRB(30, 30, 30, 0),
         child: SingleChildScrollView(
-          child:Column(
-            crossAxisAlignment:CrossAxisAlignment.start,
-            children:[
-
-            ],
+          child:Center(
+            child:Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children:[
+                DonorProfile(),
+              ],
+            ),
           ),
         ),
       ),
