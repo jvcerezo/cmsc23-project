@@ -1,5 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:elbigayan/pages/organization/orghome_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:elbigayan/pages/sign_in.dart ';
@@ -21,11 +20,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Elbigayan',
       initialRoute: '/',
+      debugShowCheckedModeBanner: false, 
+      title: 'ELBIgayan',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => OrganizationHomePage(), 
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const SignInPage()
+    );
+  }
+}
+        primarySwatch: Colors.blue,
+      ),
     );
   }
 }
