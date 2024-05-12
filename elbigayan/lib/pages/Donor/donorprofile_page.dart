@@ -5,21 +5,21 @@ class DonorProfilePage extends StatefulWidget{
   const DonorProfilePage({super.key});
 
   @override
-  State<DonorProfilePage> createState()=> _DonopProfilePageState();
+  State<DonorProfilePage> createState()=> _DonorProfilePageState();
 }
 
-class _DonopProfilePageState extends State<DonorHomePage>{
+class _DonorProfilePageState extends State<DonorProfilePage>{
 
   @override
   Widget build (BuildContext context){
-    const TextStyle defaultTextStyle=TextStyle(
-      colors.Colors.black,
+    const TextStyle defaultTextStyle= TextStyle(
+      color:Colors.black,
       fontSize:20.0,
       fontWeight:FontWeight.bold,
     );
     return Scaffold(
-      drawer const DonorAppDrawer();
-      appBar:appBar(
+      drawer: const DonorAppDrawer(),
+      appBar:AppBar(
         title: const Text(
           "Profile",
           style: TextStyle(color:Colors.white,fontWeight:FontWeight.bold),

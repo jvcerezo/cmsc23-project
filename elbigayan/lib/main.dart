@@ -1,4 +1,5 @@
 import 'package:elbigayan/pages/Donor/donorhome_page.dart';
+import 'package:elbigayan/pages/Donor/donorprofile_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => DonorHomePage(), 
+        '/profile':(context) => DonorProfilePage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
