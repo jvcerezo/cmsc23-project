@@ -1,3 +1,4 @@
+import 'package:elbigayan/pages/organization/orgdonation_drive_page.dart';
 import 'package:elbigayan/pages/organization/orghome_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => OrganizationHomePage(), 
+        '/donation-drives': (context) => DonationDrivePage()
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
