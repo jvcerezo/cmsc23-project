@@ -1,3 +1,4 @@
+import 'package:elbigayan/widgets/donationtile_widget.dart';
 import 'package:flutter/material.dart';
 
 class DonationList extends StatelessWidget {
@@ -15,21 +16,7 @@ class DonationList extends StatelessWidget {
             itemCount: donorNames.length,
             itemBuilder: (BuildContext context, int index) {
               String donorName = donorNames[index];
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black, width: 2),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                margin: EdgeInsets.symmetric(vertical: 4.0),
-                child: ListTile(
-                  tileColor: Colors.blue[50],
-                  title: Text(
-                    "Donation by $donorName",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  onTap: () {},
-                ),
-              );
+              return DonationTile(donorName: donorName);
             },
           ),
         ],
