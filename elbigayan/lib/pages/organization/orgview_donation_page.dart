@@ -1,16 +1,32 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:elbigayan/models/donation_model.dart';
 
-// class ViewDonation extends StatefulWidget {
-//   final 
-//   const ViewDonation({super.key});
+class DonationDetailsPage extends StatelessWidget {
+  final Donation donation;
 
-//   @override
-//   State<ViewDonation> createState() => _ViewDonationState();
-// }
+  DonationDetailsPage({required this.donation});
 
-// class _ViewDonationState extends State<ViewDonation> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return ;
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Donation Details'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('User ID: ${donation.userID}'),
+            Text('Category: ${donation.category}'),
+            Text('Mode: ${donation.mode}'),
+            Text('Weight: ${donation.weight}'),
+            Text('Delivery Time: ${donation.deliveryTime}'),
+            Text('Image URL: ${donation.imageUrl}'),
+            // Add more details as needed
+          ],
+        ),
+      ),
+    );
+  }
+}

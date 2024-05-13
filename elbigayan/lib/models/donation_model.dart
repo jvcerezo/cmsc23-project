@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Donation {
   final int userID;
@@ -7,7 +6,7 @@ class Donation {
   String category;
   String mode;
   double weight;
-  Timestamp deliveryTime;
+  String deliveryTime;
   String imageUrl;
 
   Donation(
