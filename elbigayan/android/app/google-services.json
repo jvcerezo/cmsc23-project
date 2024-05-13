@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "670966326779",
+    "project_id": "cmsc23-project-46270",
+    "storage_bucket": "cmsc23-project-46270.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670966326779:android:9f6d1aa10b9154edc6975e",
+        "android_client_info": {
+          "package_name": "com.elbigayan.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfRUf_S1PbDhFFhLYKIUP7bADdVr6JORw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
