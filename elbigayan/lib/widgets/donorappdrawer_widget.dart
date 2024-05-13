@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class DonorAppDrawer extends StatelessWidget {
   const DonorAppDrawer({Key? key}) : super(key: key);
@@ -70,7 +72,10 @@ class DonorAppDrawer extends StatelessWidget {
                 'Logout',
                 style: defaultTextStyle, // Apply defaultTextStyle here
               ),
-              onTap: () {},
+              onTap: () async {
+                 await Provider.of<UserAuthProvider>(context, listen: false).signOut();
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+              },
             ),
             const Divider(),
           ]),

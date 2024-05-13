@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrganizationAppDrawer extends StatelessWidget {
   const OrganizationAppDrawer({Key? key}) : super(key: key);
@@ -80,7 +82,9 @@ class OrganizationAppDrawer extends StatelessWidget {
                 'Profile',
                 style: defaultTextStyle, 
               ),
-              onTap: () {},
+              onTap: (
+                
+              ) {},
             ),
             const Divider(),
             ListTile(
@@ -88,7 +92,10 @@ class OrganizationAppDrawer extends StatelessWidget {
                 'Logout',
                 style: defaultTextStyle, 
               ),
-              onTap: () {},
+              onTap: () async {
+                await Provider.of<UserAuthProvider>(context, listen: false).signOut();
+                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+              },
             ),
             const Divider(),
           ]),
