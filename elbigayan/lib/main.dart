@@ -5,13 +5,21 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:elbigayan/pages/sign_in.dart ';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserAuthProvider()),
+      ],
+      child:
+    const MyApp())
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +32,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       debugShowCheckedModeBanner: false, 
       routes: {
-        '/': (context) => OrganizationHomePage(), 
+        // '/': (context) => SignInPage(), 
         '/donation-drives': (context) => DonationDrivePage(),
         '/organization': (context) => const OrganizationHomePage(), 
       },
