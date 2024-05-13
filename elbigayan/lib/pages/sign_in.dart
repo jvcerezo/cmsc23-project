@@ -104,10 +104,12 @@ class _SignInPageState extends State<SignInPage> {
           print(message);
           print(showSignInErrorMessage);
 
+         // if sign in success navigate to home page
           setState(() {
             if (message != null && message.isNotEmpty) {
               showSignInErrorMessage = true;
             } else {
+              Navigator.pushNamed(context, '/organization');
               showSignInErrorMessage = false;
             }
           });
