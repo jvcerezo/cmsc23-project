@@ -1,3 +1,4 @@
+import 'package:elbigayan/pages/Donor/donation_page.dart';
 import 'package:flutter/material.dart';
 
 class OrganizationList extends StatelessWidget {
@@ -27,7 +28,13 @@ class OrganizationList extends StatelessWidget {
                     "$OrganizationName",
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    // to donation page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> DonationPage()),
+                    );
+                  },
                 ),
               );
             },
