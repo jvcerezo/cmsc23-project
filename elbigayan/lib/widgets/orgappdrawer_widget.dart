@@ -37,7 +37,7 @@ class OrganizationAppDrawer extends StatelessWidget {
               ),
               title: const Text(
                 'Organization',
-                style: defaultTextStyle, // Apply defaultTextStyle here
+                style: defaultTextStyle,
               ),
             ),
             const SizedBox(
@@ -45,16 +45,40 @@ class OrganizationAppDrawer extends StatelessWidget {
             ),
             ListTile(
               title: const Text(
-                'Donation Drives',
-                style: defaultTextStyle, // Apply defaultTextStyle here
+                'Home',
+                style: defaultTextStyle, 
               ),
-              onTap: () {},
+              onTap: () {
+                if (ModalRoute.of(context)!.settings.name ==
+                    '/') {
+                  Navigator.of(context)
+                      .pop(); 
+                } else {
+                  Navigator.pushNamed(context, '/');
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text(
+                'Donation Drives',
+                style: defaultTextStyle,
+              ),
+              onTap: () {
+                if (ModalRoute.of(context)!.settings.name ==
+                    '/donation-drives') {
+                  Navigator.of(context)
+                      .pop(); 
+                } else {
+                  Navigator.pushNamed(context, '/donation-drives');
+                }
+              },
             ),
             const Divider(),
             ListTile(
               title: const Text(
                 'Profile',
-                style: defaultTextStyle, // Apply defaultTextStyle here
+                style: defaultTextStyle, 
               ),
               onTap: () {},
             ),
@@ -62,7 +86,7 @@ class OrganizationAppDrawer extends StatelessWidget {
             ListTile(
               title: const Text(
                 'Logout',
-                style: defaultTextStyle, // Apply defaultTextStyle here
+                style: defaultTextStyle, 
               ),
               onTap: () {},
             ),
