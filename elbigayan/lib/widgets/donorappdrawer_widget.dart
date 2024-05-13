@@ -48,7 +48,10 @@ class DonorAppDrawer extends StatelessWidget {
                 'Organizations',
                 style: defaultTextStyle, // Apply defaultTextStyle here
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/');
+              },
             ),
             const Divider(),
             ListTile(
