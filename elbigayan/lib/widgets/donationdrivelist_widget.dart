@@ -1,7 +1,6 @@
 import 'package:elbigayan/models/donation_drive_model.dart';
 import 'package:elbigayan/models/donation_model.dart';
 import 'package:elbigayan/pages/organization/orgview_donation_drive_details_page.dart';
-import 'package:elbigayan/pages/organization/orgview_donation_page.dart';
 import 'package:flutter/material.dart';
 
 class DonationDriveList extends StatelessWidget {
