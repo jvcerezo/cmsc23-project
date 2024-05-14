@@ -10,6 +10,7 @@ import 'package:elbigayan/pages/sign_in.dart ';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         builder: (context, authProvider, _) {
           if (authProvider.user != null) {
             // Assuming you have a method to determine the role
-            switch (authProvider.userRole) { 
+            switch (authProvider.userRole) {
               case 'Admin':
                 return const AdminDashboard(); // You need to add this route
               case 'Organization':

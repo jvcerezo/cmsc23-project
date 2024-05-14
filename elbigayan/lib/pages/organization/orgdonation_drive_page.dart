@@ -1,3 +1,4 @@
+import 'package:elbigayan/widgets/donationdrive_alertdialog.dart';
 import 'package:elbigayan/widgets/donationdrivelist_widget.dart';
 import 'package:elbigayan/widgets/orgappdrawer_widget.dart';
 import 'package:flutter/material.dart';
@@ -48,27 +49,7 @@ class _DonationDrivePageState extends State<DonationDrivePage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Add Donation Drive'),
-                content: const SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [],
-                  ),
-                ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[900]),
-                    child: const Text('Add',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              );
+              return AddDonationDrive();
             },
           );
         },
