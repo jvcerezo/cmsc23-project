@@ -6,7 +6,7 @@ import 'package:elbigayan/pages/Donor/donorprofile_page.dart';
 import 'package:elbigayan/pages/Donor/donation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:elbigayan/pages/sign_in.dart ';
+import 'package:elbigayan/pages/sign_in.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'package:provider/provider.dart';

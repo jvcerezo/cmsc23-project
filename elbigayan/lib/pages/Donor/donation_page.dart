@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
 
 class DonationPage extends StatefulWidget{
   const DonationPage({super.key});
@@ -9,6 +9,13 @@ class DonationPage extends StatefulWidget{
 }
 
 class _DonationPageState extends State<DonationPage>{
+  List<String> donationItem =[];
+
+  void updateDonationItems(List<String> items){
+    setState((){
+      donationItem=items;
+    });
+  }
 
   @override
   Widget build (BuildContext context){
@@ -25,6 +32,23 @@ class _DonationPageState extends State<DonationPage>{
         ),
         backgroundColor:Colors.blue[900],
         iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(16.0),
+        child:SingleChildScrollView(
+          child:Column(
+            crossAxisAlignment:CrossAxisAlignment.start,
+            children:[
+              Center(
+              child: const Text(
+                "Name of the Organization",
+                style:defaultTextStyle,
+              ),
+              ),
+              DonationItem(donationItemCallback:updateDonationItems),    
+            ],
+          ),
+        ),
       ),
     );
   }
