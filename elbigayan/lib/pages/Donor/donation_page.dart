@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
+import 'package:elbigayan/widgets/donorModeofDelivery_widget.dart';
 
 class DonationPage extends StatefulWidget{
   const DonationPage({super.key});
@@ -45,7 +46,8 @@ class _DonationPageState extends State<DonationPage>{
                 style:defaultTextStyle,
               ),
               ),
-              DonationItem(donationItemCallback:updateDonationItems),    
+              DonationItem(donationItemCallback:updateDonationItems),
+              ModeofDelivery(),
             ],
           ),
         ),
