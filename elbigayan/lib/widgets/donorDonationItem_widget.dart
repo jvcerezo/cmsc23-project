@@ -1,3 +1,4 @@
+import 'package:elbigayan/widgets/donorSpecifyDonation_widget.dart';
 import 'package:flutter/material.dart';
 
 class DonationItem extends StatefulWidget {
@@ -21,6 +22,10 @@ class _DonationItemState extends State<DonationItem> {
     "Necessities": false,
     "Others": false,
   };
+
+  // to show or hide the specify donation text field
+  bool _showSpecifyDonation = false;
+  final TextEditingController _specifyDonationController = TextEditingController();
 
   // Get a list of currently selected donation items
   List<String> get _selectedDonationItems => _donationItems.entries
@@ -50,11 +55,21 @@ class _DonationItemState extends State<DonationItem> {
               onChanged: (bool? value) {
                 setState(() {
                   _donationItems[donationItem] = value!;
+
+                  //Check if others is selected
+                  if(donationItem=="Others"){
+                    _showSpecifyDonation=value;
+                  }
                   widget.donationItemCallback(_selectedDonationItems);
                 });
               },
             );
           }).toList(),
+        ),
+        if(_showSpecifyDonation)
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: SpecifyDonation(controller: _specifyDonationController),
         ),
       ],
     );
