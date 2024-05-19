@@ -14,11 +14,6 @@ class _DonorProfilePageState extends State<DonorProfilePage>{
 
   @override
   Widget build (BuildContext context){
-    const TextStyle defaultTextStyle= TextStyle(
-      color:Colors.black,
-      fontSize:20.0,
-      fontWeight:FontWeight.bold,
-    );
     return Scaffold(
       drawer: const DonorAppDrawer(),
       appBar:AppBar(
@@ -31,7 +26,7 @@ class _DonorProfilePageState extends State<DonorProfilePage>{
       ),
       body:Container(
         margin:const EdgeInsets.fromLTRB(30, 30, 30, 0),
-        child: SingleChildScrollView(
+        child: const SingleChildScrollView(
           child:Center(
             child:Column(
               crossAxisAlignment:CrossAxisAlignment.start,

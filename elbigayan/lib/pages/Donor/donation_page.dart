@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
 import 'package:elbigayan/widgets/donorModeofDelivery_widget.dart';
+import 'package:elbigayan/widgets/donorDateTimeInputFields_widget.dart';
 
 class DonationPage extends StatefulWidget{
   const DonationPage({super.key});
@@ -40,14 +41,15 @@ class _DonationPageState extends State<DonationPage>{
           child:Column(
             crossAxisAlignment:CrossAxisAlignment.start,
             children:[
-              Center(
-              child: const Text(
+              const Center(
+              child: Text(
                 "Name of the Organization",
                 style:defaultTextStyle,
               ),
               ),
               DonationItem(donationItemCallback:updateDonationItems),
               ModeofDelivery(),
+              DateTimeInputs(),
             ],
           ),
         ),
