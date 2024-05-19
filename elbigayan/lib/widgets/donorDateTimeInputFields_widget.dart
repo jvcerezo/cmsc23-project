@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DateTimeInputs extends StatefulWidget {
@@ -41,47 +42,66 @@ class _DateTimeInputsState extends State<DateTimeInputs> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      
       children: [
-        SizedBox(height: 20),
-        Text("Date and Time"),
+        SizedBox(height: 15),
+        Text(
+          "Date and Time",
+          style: TextStyle(
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+            ),
+          ),
         Row(
           children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () => _selectDate(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: TextEditingController(
-                      text: _selectedDate != null
+            GestureDetector(
+              onTap: () => _selectDate(context),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  border: Border.all(color: Colors.blue),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      _selectedDate != null
                           ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"
-                          : "",
+                          : "Select Date",
+                      style: TextStyle(fontSize: 16),
                     ),
-                    decoration: InputDecoration(
-                      labelText: "Date",
-                      suffixIcon: Icon(Icons.calendar_today),
-                    ),
-                  ),
+                    SizedBox(width: 5),
+                    Icon(Icons.calendar_today),
+                  ],
                 ),
               ),
             ),
             SizedBox(width: 10),
-            Expanded(
-              child: TextFormField(
-                validator: (value) {
-                  RegExp regExp = RegExp(
-                    r'^(([0-1][0-9])|([2][0-3])):([0-5][0-9]) (AM|PM)$',
-                    caseSensitive: false,
-                  );
-                  if (!regExp.hasMatch(value!)) {
-                    return 'Enter a valid time format (12:00 AM/PM)';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: "Time",
-                  hintText: 'Enter time',
+            GestureDetector(
+              onTap: () => _selectTime(context),
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  border: Border.all(color: Colors.blue),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      _selectedTime != null
+                          ? "${_selectedTime!.hour}:${_selectedTime!.minute}"
+                          : "Select Time",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(width: 5),
+                    Icon(Icons.access_time),
+                  ],
                 ),
               ),
             ),
