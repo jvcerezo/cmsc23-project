@@ -1,3 +1,4 @@
+import 'package:elbigayan/widgets/donorAddressInputField_widget.dart';
 import 'package:flutter/material.dart';
 
 class ModeofDelivery extends StatefulWidget {
@@ -14,6 +15,7 @@ class _ModeofDeliveryState extends State<ModeofDelivery> {
   ];
 
   String _dropdownValue = _dropdownOptions.first;
+  final TextEditingController _addressController =TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,12 @@ class _ModeofDeliveryState extends State<ModeofDelivery> {
               _dropdownValue = val!;
             });
           },
-        )
+        ),
+        if(_dropdownValue == "Pick-up")
+        Padding(
+          padding: const EdgeInsets.only(top:10.0),
+          child:AddressInputField(controller: _addressController),
+        ),
       ],
     );
   }
