@@ -1,3 +1,4 @@
+import 'package:elbigayan/widgets/donorInputFields_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
 import 'package:elbigayan/widgets/donorModeofDelivery_widget.dart';
@@ -48,6 +49,7 @@ class _DonationPageState extends State<DonationPage>{
               ),
               ),
               DonationItem(donationItemCallback:updateDonationItems),
+              InputFields(),
               ModeofDelivery(),
               DateTimeInputs(),
             ],
