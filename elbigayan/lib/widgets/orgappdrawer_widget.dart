@@ -84,7 +84,10 @@ class OrganizationAppDrawer extends StatelessWidget {
               ),
               onTap: (
                 
-              ) {},
+              ) {
+                Navigator.pop(context);
+                Navigator.pushNamed(context,'/organization-profile');
+              },
             ),
             const Divider(),
             ListTile(
