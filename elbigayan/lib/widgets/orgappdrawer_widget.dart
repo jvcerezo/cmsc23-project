@@ -84,7 +84,10 @@ class OrganizationAppDrawer extends StatelessWidget {
               ),
               onTap: (
                 
-              ) {},
+              ) {
+                Navigator.pop(context);
+                Navigator.pushNamed(context,'/organization-profile');
+              },
             ),
             const Divider(),
             ListTile(
@@ -93,7 +96,7 @@ class OrganizationAppDrawer extends StatelessWidget {
                 style: defaultTextStyle, 
               ),
               onTap: () async {
-                await Provider.of<UserAuthProvider>(context, listen: false).signOut();
+                 await Provider.of<UserAuthProvider>(context, listen: false).signOut();
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
             ),

@@ -8,6 +8,9 @@ class Donation {
   double weight;
   String deliveryTime;
   String imageUrl;
+  // String address;
+  // String contact;
+  // String status;
 
   Donation(
       {required this.userID,
