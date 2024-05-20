@@ -42,10 +42,9 @@ class MyApp extends StatelessWidget {
       home: Consumer<UserAuthProvider>(
         builder: (context, authProvider, _) {
           if (authProvider.user != null) {
-            // Assuming you have a method to determine the role
             switch (authProvider.userRole) {
               case 'Admin':
-                return const AdminDashboard(); // You need to add this route
+                return const AdminDashboard();
               case 'Organization':
                 return const OrganizationHomePage();
               case 'Donor':
@@ -66,7 +65,7 @@ class MyApp extends StatelessWidget {
         '/donor-profile': (context) => const DonorProfilePage(),
         '/donor-donation': (context) => const DonationPage(),
         '/admin': (context) => const AdminDashboard(),
-         
+        '/login': (context) => const SignInPage(),
       },
     );
   }
