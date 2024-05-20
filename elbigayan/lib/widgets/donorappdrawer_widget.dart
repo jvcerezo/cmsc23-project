@@ -63,7 +63,7 @@ class DonorAppDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context,'/profile');
+                Navigator.pushNamed(context,'/donor-profile');
               },
             ),
             const Divider(),
