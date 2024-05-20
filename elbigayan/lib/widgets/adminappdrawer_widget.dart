@@ -45,47 +45,6 @@ class AdminAppDrawer extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            ListTile(
-              title: const Text(
-                'Home',
-                style: defaultTextStyle, 
-              ),
-              onTap: () {
-                if (ModalRoute.of(context)!.settings.name ==
-                    '/') {
-                  Navigator.of(context)
-                      .pop(); 
-                } else {
-                  Navigator.pushNamed(context, '/');
-                }
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text(
-                'Donation Drives',
-                style: defaultTextStyle,
-              ),
-              onTap: () {
-                if (ModalRoute.of(context)!.settings.name ==
-                    '/donation-drives') {
-                  Navigator.of(context)
-                      .pop(); 
-                } else {
-                  Navigator.pushNamed(context, '/donation-drives');
-                }
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text(
-                'Profile',
-                style: defaultTextStyle, 
-              ),
-              onTap: (
-                
-              ) {},
-            ),
             const Divider(),
             ListTile(
               title: const Text(
