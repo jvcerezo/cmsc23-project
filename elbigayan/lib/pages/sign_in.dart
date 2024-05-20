@@ -113,7 +113,7 @@ class _SignInPageState extends State<SignInPage> {
               Navigator.pushNamed(context, '/organization');
               break;
               case 'Donor':
-              Navigator.pushNamed(context, '/donor');
+              Navigator.pushNamed(context, '/donor-home');
               break;
               default:
               showSignInErrorMessage = true; 

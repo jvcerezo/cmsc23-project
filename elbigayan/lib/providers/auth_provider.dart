@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../api/firebase_auth_api.dart';
 
 class UserAuthProvider with ChangeNotifier {
@@ -34,10 +34,13 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp(String email, String password, String role) async {
+  Future<void> signUp(String email, String password, String role, {required Map<String, dynamic> additionalData}) async {
     UserCredential credential = await authService.signUp(email, password);
     if (credential.user != null) {
-      await authService.setUserRole(credential.user!.uid, role);
+      if (role == 'Organization' && additionalData['proofOfLegitimacy'] != null) {
+        await authService.uploadProofOfLegitimacy(credential.user!.uid, File(additionalData['proofOfLegitimacy']));
+      }
+      await authService.setUserRole(credential.user!.uid, role, additionalData);
       notifyListeners();
     }
   }
@@ -56,4 +59,3 @@ class UserAuthProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-

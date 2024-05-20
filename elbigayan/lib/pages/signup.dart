@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -14,8 +17,27 @@ class _SignUpState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? name;
+  String? username;
+  String? address;
+  String? contactNo;
+  String? orgName;
+  File? proofOfLegitimacy;
   String? role;
   final List<String> roles = ['Donor', 'Organization', 'Admin'];
+
+  Future<void> _pickProofOfLegitimacy() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png'],
+    );
+
+    if (result != null) {
+      setState(() {
+        proofOfLegitimacy = File(result.files.single.path!);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +56,38 @@ class _SignUpState extends State<SignUpPage> {
                   child: Text(
                     "Sign Up",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Name"),
+                      hintText: "Enter your name"),
+                    onSaved: (value) => name = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your name";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Username"),
+                      hintText: "Enter your username"),
+                    onSaved: (value) => username = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your username";
+                      }
+                      return null;
+                    },
                   ),
                 ),
                 Padding(
@@ -69,6 +123,38 @@ class _SignUpState extends State<SignUpPage> {
                     },
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Address"),
+                      hintText: "Enter your address"),
+                    onSaved: (value) => address = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your address";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Contact No."),
+                      hintText: "Enter your contact number"),
+                    onSaved: (value) => contactNo = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your contact number";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
                 DropdownButtonFormField<String>(
                   decoration: const InputDecoration(
                     labelText: "Select Role",
@@ -88,13 +174,47 @@ class _SignUpState extends State<SignUpPage> {
                   }).toList(),
                   validator: (value) => value == null ? 'Please select a role' : null,
                 ),
+                if (role == 'Organization')
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30, bottom: 30),
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            label: Text("Organization Name"),
+                            hintText: "Enter organization name"),
+                          onSaved: (value) => orgName = value,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter the organization name";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: _pickProofOfLegitimacy,
+                        child: Text(proofOfLegitimacy == null ? "Upload Proof of Legitimacy" : "Proof Selected"),
+                      ),
+                    ],
+                  ),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       if (role != null) {
                         try {
-                          await context.read<UserAuthProvider>().signUp(email!, password!, role!);
+                          await context.read<UserAuthProvider>().signUp(email!, password!, role!,
+                            additionalData: {
+                              'name': name,
+                              'username': username,
+                              'address': address,
+                              'contactNo': contactNo,
+                              if (role == 'Organization') 'orgName': orgName,
+                              if (role == 'Organization') 'proofOfLegitimacy': proofOfLegitimacy?.path,
+                            },
+                          );
                           Navigator.of(context).pop();
                         } on FirebaseAuthException catch (e) {
                           final errorMessage = e.message ?? "An error occurred during sign up.";
@@ -107,7 +227,7 @@ class _SignUpState extends State<SignUpPage> {
                       }
                     }
                   },
-                  child: const Text("Sign Up")
+                  child: const Text("Sign Up"),
                 )
               ],
             ),

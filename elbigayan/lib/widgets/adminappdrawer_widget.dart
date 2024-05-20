@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
-class DonorAppDrawer extends StatelessWidget {
-  const DonorAppDrawer({Key? key}) : super(key: key);
+class AdminAppDrawer extends StatelessWidget {
+  const AdminAppDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,42 +38,21 @@ class DonorAppDrawer extends StatelessWidget {
                 ),
               ),
               title: const Text(
-                'Donor',
-                style: defaultTextStyle, // Apply defaultTextStyle here
+                'Admin',
+                style: defaultTextStyle,
               ),
             ),
             const SizedBox(
               height: 30,
             ),
-            ListTile(
-              title: const Text(
-                'Organizations',
-                style: defaultTextStyle, // Apply defaultTextStyle here
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text(
-                'Profile',
-                style: defaultTextStyle, // Apply defaultTextStyle here
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context,'/donor-profile');
-              },
-            ),
             const Divider(),
             ListTile(
               title: const Text(
                 'Logout',
-                style: defaultTextStyle, // Apply defaultTextStyle here
+                style: defaultTextStyle, 
               ),
               onTap: () async {
-                 await Provider.of<UserAuthProvider>(context, listen: false).signOut();
+                await Provider.of<UserAuthProvider>(context, listen: false).signOut();
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
             ),

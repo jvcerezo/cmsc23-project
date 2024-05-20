@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:elbigayan/widgets/orgappdrawer_widget.dart';
+import 'package:elbigayan/widgets/adminappdrawer_widget.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -8,7 +8,7 @@ class AdminDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Admin Dashboard')),
-      drawer: const OrganizationAppDrawer(),
+      drawer: const AdminAppDrawer(),
       body: ListView(
         children: <Widget>[
           ListTile(
