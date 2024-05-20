@@ -93,7 +93,7 @@ class OrganizationAppDrawer extends StatelessWidget {
                 style: defaultTextStyle, 
               ),
               onTap: () async {
-                await Provider.of<UserAuthProvider>(context, listen: false).signOut();
+                 await Provider.of<UserAuthProvider>(context, listen: false).signOut();
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
             ),
