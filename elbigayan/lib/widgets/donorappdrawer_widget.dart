@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
-class OrganizationAppDrawer extends StatelessWidget {
-  const OrganizationAppDrawer({Key? key}) : super(key: key);
+class DonorAppDrawer extends StatelessWidget {
+  const DonorAppDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,8 @@ class OrganizationAppDrawer extends StatelessWidget {
                 ),
               ),
               title: const Text(
-                'Organization',
-                style: defaultTextStyle,
+                'Donor',
+                style: defaultTextStyle, // Apply defaultTextStyle here
               ),
             ),
             const SizedBox(
@@ -47,53 +47,33 @@ class OrganizationAppDrawer extends StatelessWidget {
             ),
             ListTile(
               title: const Text(
-                'Home',
-                style: defaultTextStyle, 
+                'Organizations',
+                style: defaultTextStyle, // Apply defaultTextStyle here
               ),
               onTap: () {
-                if (ModalRoute.of(context)!.settings.name ==
-                    '/') {
-                  Navigator.of(context)
-                      .pop(); 
-                } else {
-                  Navigator.pushNamed(context, '/');
-                }
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text(
-                'Donation Drives',
-                style: defaultTextStyle,
-              ),
-              onTap: () {
-                if (ModalRoute.of(context)!.settings.name ==
-                    '/donation-drives') {
-                  Navigator.of(context)
-                      .pop(); 
-                } else {
-                  Navigator.pushNamed(context, '/donation-drives');
-                }
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/');
               },
             ),
             const Divider(),
             ListTile(
               title: const Text(
                 'Profile',
-                style: defaultTextStyle, 
+                style: defaultTextStyle, // Apply defaultTextStyle here
               ),
-              onTap: (
-                
-              ) {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context,'/profile');
+              },
             ),
             const Divider(),
             ListTile(
               title: const Text(
                 'Logout',
-                style: defaultTextStyle, 
+                style: defaultTextStyle, // Apply defaultTextStyle here
               ),
               onTap: () async {
-                await Provider.of<UserAuthProvider>(context, listen: false).signOut();
+                 await Provider.of<UserAuthProvider>(context, listen: false).signOut();
                 Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
               },
             ),

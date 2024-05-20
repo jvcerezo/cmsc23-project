@@ -96,24 +96,34 @@ class _SignInPageState extends State<SignInPage> {
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
           _formKey.currentState!.save();
-          String? message = await context
-              .read<UserAuthProvider>()
-              .authService
-              .signIn(email!, password!);
+          String? role = await context
+          .read<UserAuthProvider>()
+          .authService
+          .signIn(email!, password!);
 
-          print(message);
-          print(showSignInErrorMessage);
-
-         // if sign in success navigate to home page
-          setState(() {
-            if (message != null && message.isNotEmpty) {
-              showSignInErrorMessage = true;
-            } else {
+        setState(() {
+          if (role != null && role.isNotEmpty) {
+            showSignInErrorMessage = false;
+            // Navigate based on role
+              switch (role) {
+              case 'Admin':
+              Navigator.pushNamed(context, '/admin');
+              break;
+              case 'Organization':
               Navigator.pushNamed(context, '/organization');
-              showSignInErrorMessage = false;
-            }
-          });
-        }
+              break;
+              case 'Donor':
+              Navigator.pushNamed(context, '/donor');
+              break;
+              default:
+              showSignInErrorMessage = true; 
+              break;
+      }
+    } else {
+      showSignInErrorMessage = true;
+    }
+  });
+}
       },
       child: const Text("Sign In"));
 
