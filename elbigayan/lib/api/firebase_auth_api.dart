@@ -1,14 +1,20 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseAuthApi {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  static final FirebaseStorage storage = FirebaseStorage.instance;
 
-  Future<void> setUserRole(String uid, String role) async {
-    await firestore.collection('users').doc(uid).set({'role': role});
+  Future<void> setUserRole(String uid, String role, Map<String, dynamic> additionalData) async {
+    await firestore.collection('users').doc(uid).set({
+      'role': role,
+      ...additionalData,
+      if (role == 'Organization') 'status': 'pending'
+    });
   }
 
   Future<String?> getUserRole(String uid) async {
@@ -46,15 +52,22 @@ class FirebaseAuthApi {
         email: email,
         password: password,
       );
-      return credential;  // Return the credential upon successful sign-up
+      return credential;  
     } on FirebaseAuthException catch (e) {
-      // Log the error for debugging
       print('Failed to sign up: ${e.code} ${e.message}');
-      throw e;  // Rethrow the exception to allow further handling outside this method
+      throw e;  
     } catch (e) {
-      // Handle any other exceptions that may occur
       print('An unexpected error occurred: $e');
-      rethrow;  // Ensure the caller can handle unexpected errors appropriately
+      rethrow; 
+    }
+  }
+
+  Future<void> uploadProofOfLegitimacy(String uid, File proof) async {
+    try {
+      final ref = storage.ref().child('proofs/$uid');
+      await ref.putFile(proof);
+    } catch (e) {
+      throw e;
     }
   }
 
