@@ -34,13 +34,11 @@ class _OrgProfilePagePageState extends State<OrgProfilePage>{
       body:Container(
         margin:const EdgeInsets.fromLTRB(30, 30, 30, 0),
         child: SingleChildScrollView(
-          child:Center(
-            child:Column(
-              crossAxisAlignment:CrossAxisAlignment.start,
-              children:[
-                OrgProfile(),
-              ],
-            ),
+          child:Column(
+            crossAxisAlignment:CrossAxisAlignment.start,
+            children:[
+              OrgProfile(),
+            ],
           ),
         ),
       ),
