@@ -1,5 +1,6 @@
 import 'package:elbigayan/models/donation_drive_model.dart';
 import 'package:elbigayan/models/donation_model.dart';
+import 'package:elbigayan/pages/organization/scan_code_page.dart';
 import 'package:flutter/material.dart';
 
 class DonationDriveDetailsPage extends StatefulWidget {
@@ -110,63 +111,7 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Add a Donation'),
-                content: Container(
-                  height: 200,
-                  width: 100,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: donations.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black, width: 2),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  margin: EdgeInsets.symmetric(vertical: 4.0),
-                                  child: ListTile(
-                                    title: Text(
-                                      "Donation by User ${donations[index].userID}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    onTap: () {},
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[900],
-                    ),
-                    child: const Text(
-                      'Add',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              );
+              return ScanCodePage();
             },
           );
         },
