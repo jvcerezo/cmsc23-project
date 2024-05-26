@@ -12,6 +12,8 @@ import 'package:elbigayan/pages/sign_in.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'providers/organization_provider.dart';
+import 'providers/donor_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +24,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserAuthProvider()),
+        ChangeNotifierProvider(create: (context) => OrganizationProvider()),
       ],
       child: const MyApp(),
     ),
