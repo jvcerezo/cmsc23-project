@@ -30,10 +30,11 @@ class DonationDrive {
         .toList();
   }
 
-  Map<String, dynamic> toJson(DonationDrive donationdrive) {
+  Map<String, dynamic> toJson() {
     return {
-      'id': donationdrive.id,
-      'title':donationdrive.title,
+      'id': id,
+      'title': title,
+      'donationList': donationList
       // 'donationList': donationdrive.donationList,
     };
   }
