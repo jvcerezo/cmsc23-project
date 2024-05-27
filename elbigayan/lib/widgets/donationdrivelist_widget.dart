@@ -1,20 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbigayan/models/donation_drive_model.dart';
 import 'package:elbigayan/pages/organization/orgview_donation_drive_details_page.dart';
-import 'package:elbigayan/providers/donationdrive_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DonationDriveList extends StatelessWidget {
-  const DonationDriveList({Key? key}) : super(key: key);
+  final Stream<QuerySnapshot> donationDriveStream;
+
+  const DonationDriveList({Key? key, required this.donationDriveStream}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> donationdriveStream =
-        context.watch<DonationDriveListProvider>().donationdrive;
-
     return StreamBuilder<QuerySnapshot>(
-      stream: donationdriveStream,
+      stream: donationDriveStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
