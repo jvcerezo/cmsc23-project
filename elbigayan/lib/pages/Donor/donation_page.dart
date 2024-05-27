@@ -52,6 +52,15 @@ class _DonationPageState extends State<DonationPage>{
               InputFields(),
               ModeofDelivery(),
               DateTimeInputs(),
+              SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: (){
+                    
+                  },
+                  child: Text('Submit'),
+                ),
+              )
             ],
           ),
         ),
