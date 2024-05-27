@@ -1,49 +1,42 @@
 import 'package:flutter/material.dart';
 
-class DateTimeInputs extends StatefulWidget {
-  const DateTimeInputs({Key? key}) : super(key: key);
+class DateTimeInputs extends StatelessWidget {
+  final Function(DateTime) onDateSelected;
+  final Function(TimeOfDay) onTimeSelected;
 
-  @override
-  State<DateTimeInputs> createState() => _DateTimeInputsState();
-}
-
-class _DateTimeInputsState extends State<DateTimeInputs> {
-  DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
+  const DateTimeInputs({
+    required this.onDateSelected,
+    required this.onTimeSelected,
+    Key? key,
+  }) : super(key: key);
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
+      initialDate: DateTime.now(),
       firstDate: DateTime(2010),
       lastDate: DateTime(2030),
     );
 
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
+    if (picked != null) {
+      onDateSelected(picked);
     }
   }
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: _selectedTime ?? TimeOfDay.now(),
+      initialTime: TimeOfDay.now(),
     );
 
-    if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-      });
+    if (picked != null) {
+      onTimeSelected(picked);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Column(
-      
       children: [
         SizedBox(height: 15),
         Text(
@@ -51,8 +44,8 @@ class _DateTimeInputsState extends State<DateTimeInputs> {
           style: TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.bold,
-            ),
           ),
+        ),
         Row(
           children: [
             GestureDetector(
@@ -68,9 +61,7 @@ class _DateTimeInputsState extends State<DateTimeInputs> {
                 child: Row(
                   children: [
                     Text(
-                      _selectedDate != null
-                          ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"
-                          : "Select Date",
+                      "Select Date",
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(width: 5),
@@ -93,9 +84,7 @@ class _DateTimeInputsState extends State<DateTimeInputs> {
                 child: Row(
                   children: [
                     Text(
-                      _selectedTime != null
-                          ? "${_selectedTime!.hour}:${_selectedTime!.minute}"
-                          : "Select Time",
+                      "Select Time",
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(width: 5),

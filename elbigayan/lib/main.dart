@@ -14,12 +14,13 @@ import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'providers/organization_provider.dart';
-import 'providers/donor_provider.dart';
+import 'providers/donation_provider.dart';
 import 'package:elbigayan/pages/admin/donor_list_page.dart';
 import 'package:elbigayan/pages/admin/organization_list_page.dart';
 import 'package:elbigayan/pages/admin/approval_organization_page.dart';
 import 'package:elbigayan/pages/auth/signup_donor.dart';
 import 'package:elbigayan/pages/auth/signup_org.dart';
+import 'package:elbigayan/pages/admin/donation_list_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,7 @@ void main() async {
         ChangeNotifierProvider(create: ((context) => DonationDriveListProvider())),
         ChangeNotifierProvider(create: (context) => UserAuthProvider()),
         ChangeNotifierProvider(create: (context) => OrganizationProvider()),
+        ChangeNotifierProvider(create: (context) => DonationProvider()),
       ],
       child: const MyApp(),
     ),
@@ -83,6 +85,7 @@ class MyApp extends StatelessWidget {
         '/approve-organization': (context) => const ApprovalPage(),
         '/signup-donor' : (context) => const SignUpDonorPage(),
         '/signup-organization' : (context) => const SignUpOrganizationPage(),
+        '/donations-list': (context) => const DonationsListPage(),
       },
     );
   }
