@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -24,6 +24,7 @@ class _SignUpState extends State<SignUpPage> {
   String? orgName;
   File? proofOfLegitimacy;
   String? role;
+  bool isApproved = false;
   final List<String> roles = ['Donor', 'Organization', 'Admin'];
 
   Future<void> _pickProofOfLegitimacy() async {
@@ -213,6 +214,7 @@ class _SignUpState extends State<SignUpPage> {
                               'contactNo': contactNo,
                               if (role == 'Organization') 'orgName': orgName,
                               if (role == 'Organization') 'proofOfLegitimacy': proofOfLegitimacy?.path,
+                              if (role == 'Organization') 'isApproved': false
                             },
                           );
                           Navigator.of(context).pop();

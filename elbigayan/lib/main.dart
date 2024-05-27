@@ -8,12 +8,15 @@ import 'package:elbigayan/pages/organization/orgprofile_page.dart';
 import 'package:elbigayan/pages/organization/scan_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:elbigayan/pages/sign_in.dart';
+import '/pages/auth/sign_in.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'providers/organization_provider.dart';
 import 'providers/donor_provider.dart';
+import 'package:elbigayan/pages/admin/donor_list_page.dart';
+import 'package:elbigayan/pages/admin/organization_list_page.dart';
+import 'package:elbigayan/pages/admin/approval_organization_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +74,9 @@ class MyApp extends StatelessWidget {
         '/admin': (context) => const AdminDashboard(),
         '/login': (context) => const SignInPage(),
         'scan-code': (context) => const ScanCodePage(),
+        '/organizations-list': (context) => const OrganizationListPage(),
+        '/donors-list': (context) => const DonorListPage(),
+        '/approve-organization': (context) => const ApprovalPage(),
       },
     );
   }

@@ -13,7 +13,7 @@ class AdminDashboard extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text('View Organizations'),
-            onTap: () => Navigator.pushNamed(context, '/organizations'),
+            onTap: () => Navigator.pushNamed(context, '/organizations-list'),
           ),
           ListTile(
             title: Text('View Donations'),
@@ -21,7 +21,11 @@ class AdminDashboard extends StatelessWidget {
           ),
           ListTile(
             title: Text('View Donors'),
-            onTap: () => Navigator.pushNamed(context, '/donors'),
+            onTap: () => Navigator.pushNamed(context, '/donors-list'),
+          ),
+          ListTile(
+            title: Text('Approve Organizations'),
+            onTap: () => Navigator.pushNamed(context, '/approve-organization'),
           ),
         ],
       ),
