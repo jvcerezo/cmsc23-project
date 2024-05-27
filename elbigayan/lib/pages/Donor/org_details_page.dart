@@ -94,6 +94,7 @@ class _OrgInfoState extends State<OrgInfo> {
                 ],
               ),
             ),
+            SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -105,6 +106,7 @@ class _OrgInfoState extends State<OrgInfo> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue[900],
                 ),
+                
                 child: Text(
                   'Donate',
                   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
