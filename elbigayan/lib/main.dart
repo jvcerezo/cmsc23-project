@@ -6,6 +6,7 @@ import 'package:elbigayan/pages/Donor/donorprofile_page.dart';
 import 'package:elbigayan/pages/Donor/donation_page.dart';
 import 'package:elbigayan/pages/organization/orgprofile_page.dart';
 import 'package:elbigayan/pages/organization/scan_code_page.dart';
+import 'package:elbigayan/providers/donationdrive_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:elbigayan/pages/sign_in.dart';
@@ -21,6 +22,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: ((context) => DonationDriveListProvider())),
         ChangeNotifierProvider(create: (context) => UserAuthProvider()),
       ],
       child: const MyApp(),

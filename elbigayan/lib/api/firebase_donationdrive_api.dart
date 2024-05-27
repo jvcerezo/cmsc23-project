@@ -13,6 +13,8 @@ class FirebaseDonationDriveAPI{
     }
   }
 
-  
+  Stream<QuerySnapshot> getAllDonationDrives() {
+    return db.collection("donationdrives").snapshots();
+  }
   
 }
