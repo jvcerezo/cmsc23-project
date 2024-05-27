@@ -1,2 +1,3 @@
-# cmsc23-project
-KAKAYANIN
+# eLBigayan - Mobile Donation System
+
+KAKAYANIN, TO BE CHANGED
