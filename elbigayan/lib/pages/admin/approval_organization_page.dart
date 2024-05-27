@@ -18,32 +18,104 @@ class _ApprovalPageState extends State<ApprovalPage> {
 
   @override
   Widget build(BuildContext context) {
+    const TextStyle defaultTextStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+    );
+
     return Scaffold(
-      appBar: AppBar(title: Text("Admin - Approve Organizations")),
+      appBar: AppBar(
+        title: const Text(
+          "Approve Organizations",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.blue[900],
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Consumer<OrganizationProvider>(
         builder: (context, organizationProvider, child) {
           if (organizationProvider.organizations.isEmpty) {
-            return Center(child: Text("No pending organizations"));
+            return const Center(child: Text("No pending organizations"));
           }
 
+          final organizations = organizationProvider.organizations;
+
           return ListView.builder(
-            itemCount: organizationProvider.organizations.length,
+            itemCount: organizations.length,
             itemBuilder: (ctx, index) {
-              final organization = organizationProvider.organizations[index];
-              return ListTile(
-                title: Text(organization['name']),
-                subtitle: Text(organization['about']),
-                trailing: ElevatedButton(
-                  onPressed: () async {
-                    await organizationProvider.approveOrganization(organization['id']);
+              final organization = organizations[index];
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+                child: ListTile(
+                  tileColor: Colors.blue[50],
+                  title: Text(
+                    organization['name'],
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: Text(organization['aboutOrg']),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => OrganizationDetailsDialog(
+                        organization: organization,
+                        onApprove: () async {
+                          await organizationProvider.approveOrganization(organization['id']);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    );
                   },
-                  child: Text("Approve"),
                 ),
               );
             },
           );
         },
       ),
+    );
+  }
+}
+
+class OrganizationDetailsDialog extends StatelessWidget {
+  final Map<String, dynamic> organization;
+  final VoidCallback onApprove;
+
+  const OrganizationDetailsDialog({
+    required this.organization,
+    required this.onApprove,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(organization['name']),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("About: ${organization['aboutOrg']}"),
+            const SizedBox(height: 10),
+            Text("Proof of Legitimacy: ${organization['proofOfLegitimacy']}"),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: onApprove,
+          child: const Text("Approve"),
+        ),
+      ],
     );
   }
 }

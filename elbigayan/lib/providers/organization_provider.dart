@@ -8,23 +8,21 @@ class OrganizationProvider with ChangeNotifier {
   List<Map<String, dynamic>> get organizations => _organizations;
 
   Future<void> fetchPendingOrganizations() async {
-  try {
-    QuerySnapshot snapshot = await _db.collection('users')
-        .where('role', isEqualTo: 'Organization')
-        .where('isApproved', isEqualTo: false) // Ensure this is checking for boolean false
-        .get();
-    _organizations = snapshot.docs.map((doc) => {
-      'id': doc.id,
-      ...doc.data() as Map<String, dynamic>
-    }).toList();
-    print(_organizations); // Add this to check data
-    notifyListeners();
-  } catch (e) {
-    print(e);
-    throw e;
+    try {
+      QuerySnapshot snapshot = await _db.collection('users')
+          .where('role', isEqualTo: 'Organization')
+          .where('isApproved', isEqualTo: false)
+          .get();
+      _organizations = snapshot.docs.map((doc) => {
+        'id': doc.id,
+        ...doc.data() as Map<String, dynamic>
+      }).toList();
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      throw e;
+    }
   }
-}
-
 
   Future<void> approveOrganization(String id) async {
     try {

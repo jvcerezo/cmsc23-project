@@ -18,6 +18,8 @@ import 'providers/donor_provider.dart';
 import 'package:elbigayan/pages/admin/donor_list_page.dart';
 import 'package:elbigayan/pages/admin/organization_list_page.dart';
 import 'package:elbigayan/pages/admin/approval_organization_page.dart';
+import 'package:elbigayan/pages/auth/signup_donor.dart';
+import 'package:elbigayan/pages/auth/signup_org.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,6 +81,8 @@ class MyApp extends StatelessWidget {
         '/organizations-list': (context) => const OrganizationListPage(),
         '/donors-list': (context) => const DonorListPage(),
         '/approve-organization': (context) => const ApprovalPage(),
+        '/signup-donor' : (context) => const SignUpDonorPage(),
+        '/signup-organization' : (context) => const SignUpOrganizationPage(),
       },
     );
   }
