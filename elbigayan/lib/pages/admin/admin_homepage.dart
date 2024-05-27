@@ -35,7 +35,7 @@ class AdminDashboard extends StatelessWidget {
               ),
               ListTile(
                 title: Text('View Donations', style: defaultTextStyle),
-                onTap: () => Navigator.pushNamed(context, '/donations'),
+                onTap: () => Navigator.pushNamed(context, '/donations-list'),
               ),
               ListTile(
                 title: Text('View Donors', style: defaultTextStyle),
