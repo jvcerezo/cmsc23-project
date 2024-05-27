@@ -28,6 +28,7 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Image.asset('assets/logo.gif'),
                   heading,
                   emailField,
                   passwordField,
