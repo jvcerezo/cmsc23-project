@@ -1,7 +1,9 @@
+import 'package:elbigayan/providers/donationdrive_provider.dart';
 import 'package:elbigayan/widgets/donationdrive_alertdialog.dart';
 import 'package:elbigayan/widgets/donationdrivelist_widget.dart';
 import 'package:elbigayan/widgets/orgappdrawer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DonationDrivePage extends StatefulWidget {
   const DonationDrivePage({super.key});
@@ -11,6 +13,13 @@ class DonationDrivePage extends StatefulWidget {
 }
 
 class _DonationDrivePageState extends State<DonationDrivePage> {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<DonationDriveListProvider>(context, listen: false).resetStream();
+  }
+
   @override
   Widget build(BuildContext context) {
     const TextStyle defaultTextStyle = TextStyle(
@@ -30,7 +39,7 @@ class _DonationDrivePageState extends State<DonationDrivePage> {
       ),
       body: Container(
         margin: const EdgeInsets.fromLTRB(30, 30, 30, 0),
-        child: const SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,7 +48,7 @@ class _DonationDrivePageState extends State<DonationDrivePage> {
                 style: defaultTextStyle,
               ),
               SizedBox(height: 20),
-              DonationDriveList()
+              DonationDriveListWrapper()
             ],
           ),
         ),
@@ -64,6 +73,19 @@ class _DonationDrivePageState extends State<DonationDrivePage> {
         shape: const StadiumBorder(),
         backgroundColor: Colors.blue[900],
       ),
+    );
+  }
+}
+
+class DonationDriveListWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Wrap DonationDriveList with Consumer to rebuild when needed
+    return Consumer<DonationDriveListProvider>(
+      builder: (context, provider, _) {
+        // Return DonationDriveList with the latest data
+        return DonationDriveList(donationDriveStream: provider.donationdrive);
+      },
     );
   }
 }
