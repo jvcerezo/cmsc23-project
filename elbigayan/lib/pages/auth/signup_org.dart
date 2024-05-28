@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../providers/auth_provider.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignUpOrganizationPage extends StatefulWidget {
+  const SignUpOrganizationPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpState();
+  State<SignUpOrganizationPage> createState() => _SignUpOrganizationPageState();
 }
 
-class _SignUpState extends State<SignUpPage> {
+class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
@@ -22,9 +21,8 @@ class _SignUpState extends State<SignUpPage> {
   String? address;
   String? contactNo;
   String? orgName;
+  String? aboutOrg;
   File? proofOfLegitimacy;
-  String? role;
-  final List<String> roles = ['Donor', 'Organization', 'Admin'];
 
   Future<void> _pickProofOfLegitimacy() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -42,7 +40,7 @@ class _SignUpState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Sign Up")),
+      appBar: AppBar(title: const Text("Sign Up as Organization")),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(30),
@@ -51,10 +49,10 @@ class _SignUpState extends State<SignUpPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(bottom: 30),
                   child: Text(
-                    "Sign Up",
+                    "Sign Up as Organization",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -155,80 +153,73 @@ class _SignUpState extends State<SignUpPage> {
                     },
                   ),
                 ),
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    labelText: "Select Role",
-                    border: OutlineInputBorder(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, bottom: 30),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Organization Name"),
+                      hintText: "Enter organization name"),
+                    onSaved: (value) => orgName = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter the organization name";
+                      }
+                      return null;
+                    },
                   ),
-                  value: role,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      role = newValue;
-                    });
-                  },
-                  items: roles.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  validator: (value) => value == null ? 'Please select a role' : null,
                 ),
-                if (role == 'Organization')
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 30),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text("Organization Name"),
-                            hintText: "Enter organization name"),
-                          onSaved: (value) => orgName = value,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter the organization name";
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: _pickProofOfLegitimacy,
-                        child: Text(proofOfLegitimacy == null ? "Upload Proof of Legitimacy" : "Proof Selected"),
-                      ),
-                    ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, bottom: 30),
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("About your organization"),
+                      hintText: "Enter details about your organization"),
+                    onSaved: (value) => aboutOrg = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter details about your organization";
+                      }
+                      return null;
+                    },
                   ),
+                ),
+                ElevatedButton(
+                  onPressed: _pickProofOfLegitimacy,
+                  child: Text(proofOfLegitimacy == null ? "Upload Proof of Legitimacy" : "Proof Selected"),
+                ),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      if (role != null) {
-                        try {
-                          await context.read<UserAuthProvider>().signUp(email!, password!, role!,
-                            additionalData: {
-                              'name': name,
-                              'username': username,
-                              'address': address,
-                              'contactNo': contactNo,
-                              if (role == 'Organization') 'orgName': orgName,
-                              if (role == 'Organization') 'proofOfLegitimacy': proofOfLegitimacy?.path,
-                            },
-                          );
-                          Navigator.of(context).pop();
-                        } on FirebaseAuthException catch (e) {
-                          final errorMessage = e.message ?? "An error occurred during sign up.";
-                          _showErrorDialog(errorMessage);
-                        } catch (e) {
-                          _showErrorDialog("Failed to sign up. Please try again.");
-                        }
-                      } else {
-                        _showErrorDialog("Please select a role to continue.");
+                      try {
+                        await context.read<UserAuthProvider>().signUp(
+                          email!, 
+                          password!, 
+                          'Organization',
+                          additionalData: {
+                            'name': name,
+                            'username': username,
+                            'address': address,
+                            'contactNo': contactNo,
+                            'orgName': orgName,
+                            'aboutOrg': aboutOrg,
+                            'proofOfLegitimacy': proofOfLegitimacy?.path,
+                            'isApproved': false,
+                          },
+                        );
+                        Navigator.of(context).pushNamed('/login');
+                      } on FirebaseAuthException catch (e) {
+                        final errorMessage = e.message ?? "An error occurred during sign up.";
+                        _showErrorDialog(errorMessage);
+                      } catch (e) {
+                        _showErrorDialog("Failed to sign up. Please try again.");
                       }
                     }
                   },
                   child: const Text("Sign Up"),
-                )
+                ),
               ],
             ),
           ),
@@ -241,11 +232,11 @@ class _SignUpState extends State<SignUpPage> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Sign Up Error'),
+        title: const Text('Sign Up Error'),
         content: Text(message),
         actions: <Widget>[
           TextButton(
-            child: Text('Okay'),
+            child: const Text('Okay'),
             onPressed: () {
               Navigator.of(ctx).pop();
             },

@@ -40,6 +40,7 @@ class UserAuthProvider with ChangeNotifier {
       if (role == 'Organization' && additionalData['proofOfLegitimacy'] != null) {
         await authService.uploadProofOfLegitimacy(credential.user!.uid, File(additionalData['proofOfLegitimacy']));
       }
+      additionalData['isApproved'] = role == 'Organization' ? false : true;
       await authService.setUserRole(credential.user!.uid, role, additionalData);
       notifyListeners();
     }

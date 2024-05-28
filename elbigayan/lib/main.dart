@@ -9,10 +9,18 @@ import 'package:elbigayan/pages/organization/scan_code_page.dart';
 import 'package:elbigayan/providers/donationdrive_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:elbigayan/pages/sign_in.dart';
+import '/pages/auth/sign_in.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'providers/organization_provider.dart';
+import 'providers/donation_provider.dart';
+import 'package:elbigayan/pages/admin/donor_list_page.dart';
+import 'package:elbigayan/pages/admin/organization_list_page.dart';
+import 'package:elbigayan/pages/admin/approval_organization_page.dart';
+import 'package:elbigayan/pages/auth/signup_donor.dart';
+import 'package:elbigayan/pages/auth/signup_org.dart';
+import 'package:elbigayan/pages/admin/donation_list_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +32,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: ((context) => DonationDriveListProvider())),
         ChangeNotifierProvider(create: (context) => UserAuthProvider()),
+        ChangeNotifierProvider(create: (context) => OrganizationProvider()),
+        ChangeNotifierProvider(create: (context) => DonationProvider()),
       ],
       child: const MyApp(),
     ),
@@ -70,6 +80,12 @@ class MyApp extends StatelessWidget {
         '/admin': (context) => const AdminDashboard(),
         '/login': (context) => const SignInPage(),
         'scan-code': (context) => const ScanCodePage(),
+        '/organizations-list': (context) => const OrganizationListPage(),
+        '/donors-list': (context) => const DonorListPage(),
+        '/approve-organization': (context) => const ApprovalPage(),
+        '/signup-donor' : (context) => const SignUpDonorPage(),
+        '/signup-organization' : (context) => const SignUpOrganizationPage(),
+        '/donations-list': (context) => const DonationsListPage(),
       },
     );
   }

@@ -13,7 +13,7 @@ class FirebaseAuthApi {
     await firestore.collection('users').doc(uid).set({
       'role': role,
       ...additionalData,
-      if (role == 'Organization') 'status': 'pending'
+      if (role == 'Organization') 'isApproved': false
     });
   }
 

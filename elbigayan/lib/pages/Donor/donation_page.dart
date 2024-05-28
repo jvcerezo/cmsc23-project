@@ -1,57 +1,78 @@
-import 'package:elbigayan/widgets/donorInputFields_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
-import 'package:elbigayan/widgets/donorModeofDelivery_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:elbigayan/providers/donation_provider.dart';
 import 'package:elbigayan/widgets/donorDateTimeInputFields_widget.dart';
+import 'package:elbigayan/widgets/donorInputFields_widget.dart';
+import 'package:elbigayan/widgets/donorAddressInputField_widget.dart';
+import 'package:elbigayan/widgets/donorModeofDelivery_widget.dart';
+import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
 
-class DonationPage extends StatefulWidget{
+class DonationPage extends StatelessWidget {
   const DonationPage({super.key});
 
   @override
-  State<DonationPage> createState()=> _DonationPageState();
-}
+  Widget build(BuildContext context) {
+    final donationProvider = Provider.of<DonationProvider>(context);
 
-class _DonationPageState extends State<DonationPage>{
-  List<String> donationItem =[];
-
-  void updateDonationItems(List<String> items){
-    setState((){
-      donationItem=items;
-    });
-  }
-
-  @override
-  Widget build (BuildContext context){
-    const TextStyle defaultTextStyle= TextStyle(
-      color:Colors.black,
-      fontSize:20.0,
-      fontWeight:FontWeight.bold,
-    );
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         title: const Text(
           "Donate",
-          style: TextStyle(color:Colors.white,fontWeight:FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor:Colors.blue[900],
+        backgroundColor: Colors.blue[900],
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         padding: EdgeInsets.all(16.0),
-        child:SingleChildScrollView(
-          child:Column(
-            crossAxisAlignment:CrossAxisAlignment.start,
-            children:[
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               const Center(
-              child: Text(
-                "Name of the Organization",
-                style:defaultTextStyle,
+                child: Text(
+                  "Name of the Organization",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
+              DonationItem(donationItemCallback: donationProvider.updateDonationItems),
+              InputFields(
+                nameController: donationProvider.nameController,
+                weightController: donationProvider.weightController,
+                addressController: donationProvider.addressController,
               ),
-              DonationItem(donationItemCallback:updateDonationItems),
-              InputFields(),
               ModeofDelivery(),
-              DateTimeInputs(),
+              DateTimeInputs(
+                onDateSelected: donationProvider.updateDate,
+                onTimeSelected: donationProvider.updateTime,
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await donationProvider.submitDonation(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Donation submitted successfully'),
+                        ),
+                      );
+                      donationProvider.clearFields();
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(e.toString()),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text('Submit Donation'),
+                ),
+              ),
             ],
           ),
         ),
