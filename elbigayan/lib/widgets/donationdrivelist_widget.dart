@@ -33,7 +33,7 @@ class DonationDriveList extends StatelessWidget {
           itemBuilder: (context, int index) {
             DocumentSnapshot doc = snapshot.data!.docs[index];
             DonationDrive donationDrive = DonationDrive.fromJson(doc.data() as Map<String, dynamic>);
-
+            print(donationDrive);
             return Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2),
@@ -47,12 +47,12 @@ class DonationDriveList extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DonationDriveDetailsPage(donationDrive: donationDrive),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => DonationDriveDetailsPage(donationDrive: donationDrive),
+                  //   ),
+                  // );
                 },
               ),
             );

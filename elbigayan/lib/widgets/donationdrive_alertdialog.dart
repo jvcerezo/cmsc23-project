@@ -1,53 +1,55 @@
+import 'package:elbigayan/api/firebase_auth_api.dart';
 import 'package:elbigayan/api/firebase_donationdrive_api.dart';
-import 'package:elbigayan/models/donation_drive_model.dart';
+import 'package:elbigayan/models/donation_drive_model.dart'; 
 import 'package:flutter/material.dart';
 
 class AddDonationDrive extends StatelessWidget {
-  final TextEditingController _idController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final FirebaseDonationDriveAPI firebaseApi = FirebaseDonationDriveAPI();
-  
-  // List<Donation> donationList;
-  AddDonationDrive({super.key});
+  final FirebaseAuthApi firebaseAuthApi = FirebaseAuthApi();
+
+  AddDonationDrive({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Add Donation Drive', style: TextStyle(fontWeight: FontWeight.bold),),
+      title: const Text(
+        'Add Donation Drive',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'ID:', 
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            TextField(
-              controller: _idController,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-            ), 
-            const SizedBox(height: 20,),
-            const Text(
-              'Title of Donation Drive:', 
+              'Title of Donation Drive:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextField(
               controller: _titleController,
               decoration: const InputDecoration(border: OutlineInputBorder()),
-            )
+            ),
           ],
         ),
       ),
       actions: <Widget>[
-         ElevatedButton(
+        ElevatedButton(
           onPressed: () async {
             String title = _titleController.text;
-            String id = _idController.text;
+
+            // Get the current user's UID
+            String? userId = firebaseAuthApi.getCurrentUserId();
+            if (userId == null) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("User is not signed in."),
+              ));
+              return;
+            }
 
             DonationDrive newDrive = DonationDrive(
-              id: id,
               title: title,
-              donationList: [], 
+              userId: userId,
+              donationList: [],
             );
 
             String result = await firebaseApi.addDonationDrive(newDrive.toJson());
