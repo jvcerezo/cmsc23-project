@@ -29,6 +29,7 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/logo.gif'),
+                  SizedBox(height: 20),
                   heading,
                   emailField,
                   passwordField,
@@ -42,11 +43,11 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget get heading => const Padding(
+  Widget get heading => Padding(
         padding: EdgeInsets.only(bottom: 30),
         child: Text(
           "Sign In",
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]),
         ),
       );
 
