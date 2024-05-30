@@ -39,7 +39,10 @@ class DonationPage extends StatelessWidget {
                   ),
                 ),
               ),
-              DonationItem(donationItemCallback: donationProvider.updateDonationItems),
+              DonationItem(
+                donationItemCallback: donationProvider.updateDonationItems,
+                specifyOthersController: donationProvider.specifyOthersController,
+              ),
               InputFields(
                 nameController: donationProvider.nameController,
                 weightController: donationProvider.weightController,

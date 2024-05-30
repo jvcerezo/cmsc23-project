@@ -1,11 +1,14 @@
 import 'package:elbigayan/widgets/donorSpecifyDonation_widget.dart';
 import 'package:flutter/material.dart';
 
+
 class DonationItem extends StatefulWidget {
   final Function(List<String>) donationItemCallback;
+  final TextEditingController specifyOthersController;
 
   const DonationItem({
     required this.donationItemCallback,
+    required this.specifyOthersController,
     Key? key,
   }) : super(key: key);
 
@@ -69,7 +72,7 @@ class _DonationItemState extends State<DonationItem> {
         if(_showSpecifyDonation)
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: SpecifyDonation(controller: _specifyDonationController),
+          child: SpecifyDonation(controller: widget.specifyOthersController),
         ),
       ],
     );

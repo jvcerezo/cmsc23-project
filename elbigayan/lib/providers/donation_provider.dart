@@ -9,6 +9,7 @@ class DonationProvider with ChangeNotifier {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController specifyOthersController = TextEditingController();
 
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
@@ -16,12 +17,17 @@ class DonationProvider with ChangeNotifier {
 
   DonationProvider() {
     fetchDonations();
+    specifyOthersController.addListener(_updateSpecifyOthers);
   }
 
   Stream<QuerySnapshot> get donationStream => _donationStream;
 
   void fetchDonations() {
     _donationStream = firebaseService.getAllDonations();
+    notifyListeners();
+  }
+
+  void _updateSpecifyOthers() {
     notifyListeners();
   }
 
@@ -33,6 +39,7 @@ class DonationProvider with ChangeNotifier {
       'date': _selectedDate?.toIso8601String(),
       'time': _selectedTime?.format(context),
       'items': _donationItems,
+      'specifyOthers': specifyOthersController.text,
     };
 
     try {
@@ -52,6 +59,7 @@ class DonationProvider with ChangeNotifier {
     nameController.clear();
     weightController.clear();
     addressController.clear();
+    specifyOthersController.clear();
     _selectedDate = null;
     _selectedTime = null;
     _donationItems = [];
@@ -78,6 +86,7 @@ class DonationProvider with ChangeNotifier {
     nameController.dispose();
     weightController.dispose();
     addressController.dispose();
+    specifyOthersController.dispose();
     super.dispose();
   }
 }

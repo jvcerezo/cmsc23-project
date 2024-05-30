@@ -50,7 +50,7 @@ class InputFields extends StatelessWidget {
             ),
           ),
         ),
-        AddressInputField(controller: addressController),
+       AddressInputField(controller: addressController),
       ],
     );
   }
