@@ -1,57 +1,83 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:elbigayan/api/donation_api.dart';
 
-class DonationProvider extends ChangeNotifier {
+class DonationProvider with ChangeNotifier {
+  final FirebaseDonationAPI firebaseService = FirebaseDonationAPI();
+  late Stream<QuerySnapshot> _donationStream;
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController weightController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  List<String> donationItems = [];
-  DateTime? selectedDate;
-  TimeOfDay? selectedTime;
 
-  void updateDonationItems(List<String> items) {
-    donationItems = items;
-    notifyListeners();
+  DateTime? _selectedDate;
+  TimeOfDay? _selectedTime;
+  List<String> _donationItems = [];
+
+  DonationProvider() {
+    fetchDonations();
   }
 
-  void updateDate(DateTime date) {
-    selectedDate = date;
-    notifyListeners();
-  }
+  Stream<QuerySnapshot> get donationStream => _donationStream;
 
-  void updateTime(TimeOfDay time) {
-    selectedTime = time;
+  void fetchDonations() {
+    _donationStream = firebaseService.getAllDonations();
     notifyListeners();
   }
 
   Future<void> submitDonation(BuildContext context) async {
-    if (nameController.text.isEmpty ||
-        weightController.text.isEmpty ||
-        selectedDate == null ||
-        selectedTime == null ||
-        donationItems.isEmpty) {
-      throw Exception('Please fill in all the fields');
-    }
-
     final donation = {
-      'donorName': nameController.text,
-      'donationWeight': weightController.text,
-      'donationItems': donationItems,
-      'deliveryAddress': addressController.text,
-      'dateTime': selectedDate!.toIso8601String(),
-      'time': selectedTime!.format(context),
+      'name': nameController.text,
+      'weight': weightController.text,
+      'address': addressController.text,
+      'date': _selectedDate?.toIso8601String(),
+      'time': _selectedTime?.format(context),
+      'items': _donationItems,
     };
 
-    await FirebaseFirestore.instance.collection('donations').add(donation);
+    try {
+      final message = await firebaseService.addDonation(donation);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+      clearFields();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
   }
 
   void clearFields() {
     nameController.clear();
     weightController.clear();
     addressController.clear();
-    donationItems = [];
-    selectedDate = null;
-    selectedTime = null;
+    _selectedDate = null;
+    _selectedTime = null;
+    _donationItems = [];
     notifyListeners();
+  }
+
+  void updateDate(DateTime date) {
+    _selectedDate = date;
+    notifyListeners();
+  }
+
+  void updateTime(TimeOfDay time) {
+    _selectedTime = time;
+    notifyListeners();
+  }
+
+  void updateDonationItems(List<String> items) {
+    _donationItems = items;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    weightController.dispose();
+    addressController.dispose();
+    super.dispose();
   }
 }

@@ -29,6 +29,7 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/logo.gif'),
+                  SizedBox(height: 20),
                   heading,
                   emailField,
                   passwordField,
@@ -42,11 +43,11 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  Widget get heading => const Padding(
+  Widget get heading => Padding(
         padding: EdgeInsets.only(bottom: 30),
         child: Text(
           "Sign In",
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.blue[900]),
         ),
       );
 
@@ -54,7 +55,9 @@ class _SignInPageState extends State<SignInPage> {
         padding: const EdgeInsets.only(bottom: 30),
         child: TextFormField(
           decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+              ),
               label: Text("Email"),
               hintText: "juandelacruz09@gmail.com"),
           onSaved: (value) => setState(() => email = value),
@@ -71,7 +74,9 @@ class _SignInPageState extends State<SignInPage> {
         padding: const EdgeInsets.only(bottom: 30),
         child: TextFormField(
           decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue),
+              ),
               label: Text("Password"),
               hintText: "******"),
           obscureText: true,
@@ -93,40 +98,59 @@ class _SignInPageState extends State<SignInPage> {
         ),
       );
 
-  Widget get submitButton => ElevatedButton(
-      onPressed: () async {
-        if (_formKey.currentState!.validate()) {
-          _formKey.currentState!.save();
-          String? role = await context
-          .read<UserAuthProvider>()
-          .authService
-          .signIn(email!, password!);
+  Widget get submitButton => Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF004aad), Color(0xFF5de0e6)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+          ),
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              String? role = await context
+                  .read<UserAuthProvider>()
+                  .authService
+                  .signIn(email!, password!);
 
-        setState(() {
-          if (role != null && role.isNotEmpty) {
-            showSignInErrorMessage = false;
-            // Navigate based on role
-              switch (role) {
-              case 'Admin':
-              Navigator.pushNamed(context, '/admin');
-              break;
-              case 'Organization':
-              Navigator.pushNamed(context, '/organization');
-              break;
-              case 'Donor':
-              Navigator.pushNamed(context, '/donor-home');
-              break;
-              default:
-              showSignInErrorMessage = true; 
-              break;
-      }
-    } else {
-      showSignInErrorMessage = true;
-    }
-  });
-}
-      },
-      child: const Text("Sign In"));
+              setState(() {
+                if (role != null && role.isNotEmpty) {
+                  showSignInErrorMessage = false;
+                  // Navigate based on role
+                  switch (role) {
+                    case 'Admin':
+                      Navigator.pushNamed(context, '/admin');
+                      break;
+                    case 'Organization':
+                      Navigator.pushNamed(context, '/organization');
+                      break;
+                    case 'Donor':
+                      Navigator.pushNamed(context, '/donor-home');
+                      break;
+                    default:
+                      showSignInErrorMessage = true;
+                      break;
+                  }
+                } else {
+                  showSignInErrorMessage = true;
+                }
+              });
+            }
+          },
+          child: const Text(
+            "Sign In",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
 
   Widget get signUpButton => Padding(
         padding: const EdgeInsets.all(30),
@@ -146,3 +170,4 @@ class _SignInPageState extends State<SignInPage> {
         ),
       );
 }
+

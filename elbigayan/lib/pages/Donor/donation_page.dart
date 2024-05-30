@@ -23,8 +23,8 @@ class DonationPage extends StatelessWidget {
         backgroundColor: Colors.blue[900],
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Container(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,27 +50,13 @@ class DonationPage extends StatelessWidget {
                 onDateSelected: donationProvider.updateDate,
                 onTimeSelected: donationProvider.updateTime,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    try {
-                      await donationProvider.submitDonation(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Donation submitted successfully'),
-                        ),
-                      );
-                      donationProvider.clearFields();
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(e.toString()),
-                        ),
-                      );
-                    }
+                    await donationProvider.submitDonation(context);
                   },
-                  child: Text('Submit Donation'),
+                  child: const Text('Submit Donation'),
                 ),
               ),
             ],
