@@ -194,20 +194,20 @@ class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       try {
+                        Map<String, dynamic> additionalData = {
+                          'name': name,
+                          'username': username,
+                          'address': address,
+                          'contactNo': contactNo,
+                          'orgName': orgName,
+                          'aboutOrg': aboutOrg,
+                          'proofOfLegitimacy': proofOfLegitimacy?.path,
+                        };
                         await context.read<UserAuthProvider>().signUp(
                           email!, 
                           password!, 
                           'Organization',
-                          additionalData: {
-                            'name': name,
-                            'username': username,
-                            'address': address,
-                            'contactNo': contactNo,
-                            'orgName': orgName,
-                            'aboutOrg': aboutOrg,
-                            'proofOfLegitimacy': proofOfLegitimacy?.path,
-                            'isApproved': false,
-                          },
+                          additionalData: additionalData,
                         );
                         Navigator.of(context).pushNamed('/login');
                       } on FirebaseAuthException catch (e) {

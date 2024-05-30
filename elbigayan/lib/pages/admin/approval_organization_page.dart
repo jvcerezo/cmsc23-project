@@ -100,7 +100,21 @@ class OrganizationDetailsDialog extends StatelessWidget {
           children: [
             Text("About: ${organization['aboutOrg']}"),
             const SizedBox(height: 10),
-            Text("Proof of Legitimacy: ${organization['proofOfLegitimacy']}"),
+            if (organization['proofOfLegitimacy'] != null && organization['proofOfLegitimacy'].isNotEmpty)
+              Column(
+                children: [
+                  Text("Proof of Legitimacy:"),
+                  const SizedBox(height: 10),
+                  Image.network(
+                    organization['proofOfLegitimacy'],
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Text("Image failed to load.");
+                    },
+                  ),
+                ],
+              )
+            else
+              const Text("No proof of legitimacy provided."),
           ],
         ),
       ),

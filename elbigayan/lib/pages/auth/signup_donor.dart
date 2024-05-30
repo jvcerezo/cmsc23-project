@@ -149,6 +149,7 @@ class _SignUpDonorPageState extends State<SignUpDonorPage> {
                             'username': username,
                             'address': address,
                             'contactNo': contactNo,
+                            'isApproved': false,
                           },
                         );
                         Navigator.of(context).pushNamed('/login');
