@@ -9,7 +9,8 @@ class FirebaseAuthApi {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static final FirebaseStorage storage = FirebaseStorage.instance;
 
-  Future<void> setUserRole(String uid, String role, Map<String, dynamic> additionalData) async {
+  Future<void> setUserRole(
+      String uid, String role, Map<String, dynamic> additionalData) async {
     await firestore.collection('users').doc(uid).set({
       'role': role,
       ...additionalData,
@@ -18,7 +19,8 @@ class FirebaseAuthApi {
   }
 
   Future<String?> getUserRole(String uid) async {
-    DocumentSnapshot snapshot = await firestore.collection('users').doc(uid).get();
+    DocumentSnapshot snapshot =
+        await firestore.collection('users').doc(uid).get();
     return snapshot.get('role');
   }
 
@@ -52,13 +54,13 @@ class FirebaseAuthApi {
         email: email,
         password: password,
       );
-      return credential;  
+      return credential;
     } on FirebaseAuthException catch (e) {
       print('Failed to sign up: ${e.code} ${e.message}');
-      throw e;  
+      throw e;
     } catch (e) {
       print('An unexpected error occurred: $e');
-      rethrow; 
+      rethrow;
     }
   }
 
@@ -73,5 +75,10 @@ class FirebaseAuthApi {
 
   Future<void> signOut() async {
     await auth.signOut();
+  }
+
+  String? getCurrentUserId() {
+    User? user = getUser();
+    return user?.uid;
   }
 }
