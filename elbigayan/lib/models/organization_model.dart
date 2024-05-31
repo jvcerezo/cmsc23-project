@@ -37,6 +37,7 @@ class Organization {
       'isApproved': isApproved,
       'isAcceptingDonations': isAcceptingDonations,
       'proofs': proofs,
+      'donationIDs': donationIDs,
     };
   }
 }
