@@ -32,7 +32,7 @@ class DonationPage extends StatelessWidget {
             children: [
               const Center(
                 child: Text(
-                  "Name of the Organization",
+                  "Donation Form",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.0,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:elbigayan/pages/Donor/donation_page.dart';
+import 'package:elbigayan/providers/organization_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrgInfo extends StatefulWidget {
   const OrgInfo({Key? key}) : super(key: key);
@@ -9,16 +11,20 @@ class OrgInfo extends StatefulWidget {
 }
 
 class _OrgInfoState extends State<OrgInfo> {
-  // Dummy data
-  String name = 'UPLB YSES-COSS-ACSS';
-  String contact = '09123456789';
-  String address = 'Batong Maliit Los Banos';
-  bool isOnline = false;
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<OrganizationProvider>(context, listen: false).fetchCurrentOrganization();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Color? buttonColor = isOnline ? Colors.blue[500] : Colors.grey;
+    final organizationProvider = Provider.of<OrganizationProvider>(context);
+    final organization = organizationProvider.currentOrganization;
 
+    if (organization == null) {
+      return Center(child: CircularProgressIndicator());
+    }
     const TextStyle defaultTextStyle = TextStyle(
       color: Colors.black,
       fontSize: 20.0,
@@ -38,7 +44,7 @@ class _OrgInfoState extends State<OrgInfo> {
         child: Column(
           children: [
             Text(
-              name,
+              organization['orgName'] ?? 'Organization',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -59,36 +65,24 @@ class _OrgInfoState extends State<OrgInfo> {
                     'Contact #',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextFormField(
-                    initialValue: contact, // Dummy
-                    enabled: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                  Text(
+                    'Contact: ${organization['contact'] ?? 'Not available'}'
+                    // decoration: InputDecoration(
+                    //   border: OutlineInputBorder(
+
+                    //   ),
+                    // ),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Address',
+                    'About',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextFormField(
-                    initialValue: address, // Dummy
-                    enabled: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10),
                   Text(
-                    'Status',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextFormField(
-                    initialValue: isOnline.toString(), // Dummy
-                    enabled: false,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                    ),
+                    'About: ${organization['aboutOrg'] ?? 'Not available'}'
+                    // decoration: InputDecoration(
+                    //   border: OutlineInputBorder(),
+               //
                   ),
                   SizedBox(height: 10),
                 ],
