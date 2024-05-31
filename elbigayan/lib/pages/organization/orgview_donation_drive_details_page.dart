@@ -7,7 +7,7 @@ import 'package:elbigayan/widgets/donationlist_widget.dart';
 import 'package:elbigayan/widgets/donationlistalertdialog_widget.dart';
 
 class DonationDriveDetailsPage extends StatefulWidget {
-  final DonationDrive donationDrive;
+  DonationDrive donationDrive;
   final String donationDriveId;
 
   DonationDriveDetailsPage({required this.donationDrive, required this.donationDriveId});
@@ -17,6 +17,23 @@ class DonationDriveDetailsPage extends StatefulWidget {
 }
 
 class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
+  Future<void> _refresh() async {
+    // Fetch fresh data from Firestore
+  try {
+    // Retrieve the donation drive data
+    DocumentSnapshot donationDriveSnapshot = await FirebaseFirestore.instance.collection('donationdrives').doc(widget.donationDriveId).get();
+    DonationDrive updatedDonationDrive = DonationDrive.fromJson(donationDriveSnapshot.data() as Map<String, dynamic>);
+
+    // Update the state or Provider with the new data
+    setState(() {
+      widget.donationDrive = updatedDonationDrive;
+    });
+  } catch (error) {
+    // Handle error
+    print("Error fetching data: $error");
+  }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -81,11 +98,11 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
                 itemCount: widget.donationDrive.donationList.length,
                 itemBuilder: (context, index) {
                   String donationId = widget.donationDrive.donationList[index];
-                  return FutureBuilder<QuerySnapshot>(
-                    future: FirebaseFirestore.instance
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
                         .collection('donations')
                         .where('id', isEqualTo: donationId)
-                        .get(),
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator(); // or a placeholder widget
@@ -120,7 +137,10 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => DonationListWrapper(donationDriveId: widget.donationDriveId),
+            builder: (context) => DonationListWrapper(
+              donationDriveId: widget.donationDriveId,
+              onDonationLinked: _refresh,
+            ),
           );
         },
         label: const Text(
@@ -140,8 +160,9 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
 
 class DonationListWrapper extends StatelessWidget {
   final String donationDriveId;
+  final VoidCallback onDonationLinked;
 
-  DonationListWrapper({required this.donationDriveId});
+  DonationListWrapper({required this.donationDriveId, required this.onDonationLinked});
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +171,7 @@ class DonationListWrapper extends StatelessWidget {
         return DonationListAlertDialog(
           donationStream: provider.donation,
           donationDriveId: donationDriveId,
+          onDonationLinked: onDonationLinked,
         );
       },
     );

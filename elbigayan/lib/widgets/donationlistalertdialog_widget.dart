@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class DonationListAlertDialog extends StatelessWidget {
   final Stream<QuerySnapshot> donationStream;
   final String donationDriveId;
+  final VoidCallback onDonationLinked;
 
-  const DonationListAlertDialog({Key? key, required this.donationStream, required this.donationDriveId}) : super(key: key);
+  const DonationListAlertDialog({Key? key, required this.donationStream, required this.donationDriveId, required this.onDonationLinked}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,12 @@ class DonationListAlertDialog extends StatelessWidget {
                 Donation donation = Donation.fromJson(doc.data() as Map<String, dynamic>);
                 return GestureDetector(
                   onTap: () {
-                    _linkDonationToDrive(context, donation.id!);
+                    _linkDonationToDrive(context, donation.id!).then((_) {
+                      Navigator.pop(context);
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        onDonationLinked();
+                      });
+                    });
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -76,31 +82,30 @@ class DonationListAlertDialog extends StatelessWidget {
   }
 
   Future<void> _linkDonationToDrive(BuildContext context, String donationId) async {
-  try {
-    // Get the current donation list from the donation drive
-    DocumentSnapshot donationDriveSnapshot = await FirebaseFirestore.instance.collection('donationdrives').doc(donationDriveId).get();
-    List<dynamic> currentDonationList = donationDriveSnapshot.get('donationList') ?? [];
+    try {
+      // Get the current donation list from the donation drive
+      DocumentSnapshot donationDriveSnapshot = await FirebaseFirestore.instance.collection('donationdrives').doc(donationDriveId).get();
+      List<dynamic> currentDonationList = donationDriveSnapshot.get('donationList') ?? [];
 
-    // Add the new donation ID to the list
-    currentDonationList.add(donationId);
+      // Add the new donation ID to the list
+      currentDonationList.add(donationId);
 
-    // Update the donation drive document with the modified donation list
-    await FirebaseFirestore.instance.collection('donationdrives').doc(donationDriveId).update({
-      'donationList': currentDonationList,
-    });
+      // Update the donation drive document with the modified donation list
+      await FirebaseFirestore.instance.collection('donationdrives').doc(donationDriveId).update({
+        'donationList': currentDonationList,
+      });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Donation linked successfully"),
-      ),
-    );
-  } catch (error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Failed to link donation: $error"),
-      ),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Donation linked successfully"),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to link donation: $error"),
+        ),
+      );
+    }
   }
-}
-
 }
