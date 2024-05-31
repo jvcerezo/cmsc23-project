@@ -51,6 +51,7 @@ class DonationProvider with ChangeNotifier {
       'items': _donationItems,
       'images': _uploadedImageUrls,
       'organizationId': organizationId,
+      'address': addressController.text,
     };
 
     try {

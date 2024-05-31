@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
         '/approve-organization': (context) => const ApprovalPage(),
         '/signup-donor' : (context) => const SignUpDonorPage(),
         '/signup-organization' : (context) => const SignUpOrganizationPage(),
-        '/donations-list': (context) => const DonationsListPage(),
+        '/donations-list': (context) => DonationsListPage()
       },
     );
   }
