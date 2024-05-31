@@ -33,6 +33,7 @@ class DonationDriveList extends StatelessWidget {
           itemBuilder: (context, int index) {
             DocumentSnapshot doc = snapshot.data!.docs[index];
             DonationDrive donationDrive = DonationDrive.fromJson(doc.data() as Map<String, dynamic>);
+            String donationDriveId = doc.id; // Get the document ID
             return Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2),
@@ -49,7 +50,7 @@ class DonationDriveList extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DonationDriveDetailsPage(donationDrive: donationDrive),
+                      builder: (context) => DonationDriveDetailsPage(donationDrive: donationDrive, donationDriveId: donationDriveId),
                     ),
                   );
                 },

@@ -31,7 +31,14 @@ class DonationProvider with ChangeNotifier {
   }
 
   Future<void> submitDonation(BuildContext context) async {
+    // Generate a new document reference to get a unique ID
+    final donationDocRef =
+        FirebaseFirestore.instance.collection('donations').doc();
+    final donationId = donationDocRef.id;
+
+    // Create the donation object with the auto-generated ID
     final donation = {
+      'id': donationId, // Add the auto-generated ID
       'name': nameController.text,
       'weight': weightController.text,
       'address': addressController.text,
@@ -42,6 +49,7 @@ class DonationProvider with ChangeNotifier {
     };
 
     try {
+      // Submit the donation with the added ID
       final message = await firebaseService.addDonation(donation);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
@@ -101,7 +109,9 @@ class DonationProvider with ChangeNotifier {
 
   Future<String> _uploadImageToFirebase(File imageFile) async {
     try {
-      final storageRef = FirebaseStorage.instance.ref().child('donation_images/${DateTime.now().millisecondsSinceEpoch}');
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('donation_images/${DateTime.now().millisecondsSinceEpoch}');
       final uploadTask = await storageRef.putFile(imageFile);
       final downloadUrl = await uploadTask.ref.getDownloadURL();
       return downloadUrl;
@@ -122,5 +132,4 @@ class DonationProvider with ChangeNotifier {
   void resetStream() {
     fetchDonations(); // Re-fetch the donations to reset the stream
   }
-
 }

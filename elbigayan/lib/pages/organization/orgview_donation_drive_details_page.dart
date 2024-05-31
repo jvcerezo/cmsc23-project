@@ -1,15 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elbigayan/models/donation_drive_model.dart';
+import 'package:flutter/material.dart';
 import 'package:elbigayan/providers/donation_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:elbigayan/widgets/donationlist_widget.dart';
 import 'package:elbigayan/widgets/donationlistalertdialog_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:elbigayan/models/donation_drive_model.dart';
-import 'package:elbigayan/pages/organization/scan_code_page.dart';
-import 'package:provider/provider.dart';
 
 class DonationDriveDetailsPage extends StatefulWidget {
   final DonationDrive donationDrive;
+  final String donationDriveId;
 
-  DonationDriveDetailsPage({required this.donationDrive});
+  DonationDriveDetailsPage({required this.donationDrive, required this.donationDriveId});
 
   @override
   State<DonationDriveDetailsPage> createState() => _DonationDriveDetailsPageState();
@@ -17,11 +18,10 @@ class DonationDriveDetailsPage extends StatefulWidget {
 
 class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     Provider.of<DonationProvider>(context, listen: false).resetStream();
   }
-  
   
   @override
   Widget build(BuildContext context) {
@@ -80,15 +80,32 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
                 ),
                 itemCount: widget.donationDrive.donationList.length,
                 itemBuilder: (context, index) {
-                  String imageUrl = widget.donationDrive.donationList[index].images[0];
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: NetworkImage(imageUrl),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  String donationId = widget.donationDrive.donationList[index];
+                  return FutureBuilder<DocumentSnapshot>(
+                    future: FirebaseFirestore.instance.collection('donations').doc(donationId).get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // or a placeholder widget
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      if (!snapshot.hasData || !snapshot.data!.exists) {
+                        return Text('No data found'); // or a placeholder widget
+                      }
+                      var donationData = snapshot.data!.data() as Map<String, dynamic>;
+                      List<String> images = donationData['images'];
+                      String imageUrl = images.isNotEmpty ? images[0] : ''; // Adjust field name based on your data structure
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                            image: NetworkImage(imageUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -98,10 +115,10 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-         showDialog(
-      context: context,
-      builder: (context) => DonationListWrapper(),
-    );
+          showDialog(
+            context: context,
+            builder: (context) => DonationListWrapper(donationDriveId: widget.donationDriveId),
+          );
         },
         label: const Text(
           'Add',
@@ -118,15 +135,16 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
   }
 }
 
-
 class DonationListWrapper extends StatelessWidget {
+  final String donationDriveId;
+
+  DonationListWrapper({required this.donationDriveId});
+
   @override
   Widget build(BuildContext context) {
-    // Wrap DonationDriveList with Consumer to rebuild when needed
     return Consumer<DonationProvider>(
       builder: (context, provider, _) {
-        // Return DonationDriveList with the latest data
-        return DonationListAlertDialog(donationStream: provider.donation);
+        return DonationListAlertDialog(donationStream: provider.donation, donationDriveId: donationDriveId);
       },
     );
   }
