@@ -1,39 +1,37 @@
 import 'dart:convert';
 
 class Donation {
-  final int userID;
   String? id;
-  double weight;
-  String name;
   String address;
   String date;
-  String time;
+  List<String> images;
   List<String> items;
-  String imageUrl;
+  String name;
+  String time;
+  String weight;
 
-  Donation(
-      {required this.userID,
-      this.id,
-      required this.weight,
-      required this.name,
-      required this.address,
-      required this.date,
-      required this.time,
-      required this.items,
-      required this.imageUrl
-      });
+  Donation({
+    this.id,
+    required this.address,
+    required this.date,
+    required this.images,
+    required this.items,
+    required this.name,
+    required this.time,
+    required this.weight,
+  });
 
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
-        userID: json['userID'],
-        id: json['id'],
-        weight: json['weight'],
-        name: json['name'],
-        address: json['address'],
-        date: json['date'],
-        time: json['time'],
-        imageUrl: json['imageUrl'],
-        items: json['items']);
+      id: json['id'] as String?,
+      address: json['address'] as String? ?? '',
+      date: json['date'] as String? ?? '',
+      images: (json['images'] as List<dynamic>?)?.map((item) => item as String).toList() ?? [],
+      items: (json['items'] as List<dynamic>?)?.map((item) => item as String).toList() ?? [],
+      name: json['name'] as String? ?? '',
+      time: json['time'] as String? ?? '',
+      weight: json['weight'] as String? ?? '',
+    );
   }
 
   static List<Donation> fromJsonArray(String jsonData) {
@@ -41,17 +39,16 @@ class Donation {
     return data.map<Donation>((dynamic d) => Donation.fromJson(d)).toList();
   }
 
-  Map<String, dynamic> toJson(Donation donation) {
+  Map<String, dynamic> toJson() {
     return {
-      'userID': donation.userID,
-      'id': donation.id,
-      'weight': donation.weight,
-      'name': donation.name,
-      'address': donation.address,
-      'date': donation.date,
-      'time': donation.time,
-      'items': donation.items,
-      'imageUrl': donation.imageUrl
+      'id': id,
+      'address': address,
+      'date': date,
+      'images': images,
+      'items': items,
+      'name': name,
+      'time': time,
+      'weight': weight,
     };
   }
 }

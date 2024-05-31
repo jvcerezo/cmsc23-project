@@ -1,6 +1,8 @@
+import 'package:elbigayan/providers/donation_provider.dart';
 import 'package:elbigayan/widgets/donationlist_widget.dart';
 import 'package:elbigayan/widgets/orgappdrawer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrganizationHomePage extends StatefulWidget {
   const OrganizationHomePage({super.key});
@@ -10,29 +12,12 @@ class OrganizationHomePage extends StatefulWidget {
 }
 
 class _OrganizationHomePageState extends State<OrganizationHomePage> {
-  // Dummy data // TODO: Model for donation
-  final List<String> names = [
-    'John Doe',
-    'Jane Smith',
-    'Alice Johnson',
-    'Bob Brown',
-    'Emily Davis',
-    'Michael Wilson',
-    'Sarah Martinez',
-    'David Anderson',
-    'Laura Taylor',
-    'Kevin Clark',
-    'John Doe',
-    'Jane Smith',
-    'Alice Johnson',
-    'Bob Brown',
-    'Emily Davis',
-    'Michael Wilson',
-    'Sarah Martinez',
-    'David Anderson',
-    'Laura Taylor',
-    'Kevin Clark',
-  ];
+
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<DonationProvider>(context, listen: false).resetStream();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +37,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        margin: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+        margin:  EdgeInsets.fromLTRB(30, 30, 30, 0),
         child:  SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +47,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
                 style: defaultTextStyle,
               ),
               const SizedBox(height: 20),
-              DonationList(donorNames: names),
+              DonationListWrapper(),
             ],
           ),
         ),
@@ -70,3 +55,18 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
     );
   }
 }
+
+
+class DonationListWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Wrap DonationDriveList with Consumer to rebuild when needed
+    return Consumer<DonationProvider>(
+      builder: (context, provider, _) {
+        // Return DonationDriveList with the latest data
+        return DonationList(donationStream: provider.donation);
+      },
+    );
+  }
+}
+

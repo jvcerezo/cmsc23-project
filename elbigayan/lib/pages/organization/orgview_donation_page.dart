@@ -49,67 +49,73 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
         ),
         backgroundColor: Colors.blue[900],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(40.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Table(
-              columnWidths: const {
-                0: FlexColumnWidth(1),
-                1: FlexColumnWidth(1),
-              },
-              children: [
-                _buildTableRow('User ID:', '${widget.donation.userID}'),
-                _buildTableRow('Address:', '${widget.donation.address}'),
-                _buildTableRow('Name:', '${widget.donation.name}'),
-                _buildTableRow('Weight:', '${widget.donation.weight}'),
-                _buildTableRow('Delivery Time:', '${widget.donation.time}'),
-                _buildTableRow('Delivery Date:', '${widget.donation.date}'),
-                _buildTableRow('Items:', '${widget.donation.items}'),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Text("Image", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("Placeholder"),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Status',
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                ),
-                value: _selectedStatus,
-                onChanged: (String? newValue) {
-                  if (newValue != null) {
-                    setState(() {
-                      _selectedStatus = newValue;
-                    });
-                  }
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Table(
+                columnWidths: const {
+                  0: FlexColumnWidth(1),
+                  1: FlexColumnWidth(1),
                 },
-                items: <String>[
-                  'Pending',
-                  'Confirmed',
-                  'Scheduled for Pick-up',
-                  'Complete',
-                  'Canceled',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                children: [
+                  _buildTableRow('Address:', '${widget.donation.address}'),
+                  _buildTableRow('Name:', '${widget.donation.name}'),
+                  _buildTableRow('Weight:', '${widget.donation.weight}'),
+                  _buildTableRow('Delivery Time:', '${widget.donation.time}'),
+                  _buildTableRow('Delivery Date:', '${widget.donation.date}'),
+                  _buildTableRow('Items:', '${widget.donation.items}'),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 30,
+              ),
+              const Text("Image", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 30,
+              ),
+              widget.donation.images.isNotEmpty
+                  ? Image.network(widget.donation.images[0])
+                  : const Text("No Image Available!"),
+              const SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    labelText: 'Status',
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                  ),
+                  value: _selectedStatus,
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        _selectedStatus = newValue;
+                      });
+                    }
+                  },
+                  items: <String>[
+                    'Pending',
+                    'Confirmed',
+                    'Scheduled for Pick-up',
+                    'Complete',
+                    'Canceled',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
