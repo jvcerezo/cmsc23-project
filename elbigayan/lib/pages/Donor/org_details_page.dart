@@ -55,12 +55,7 @@ class OrgInfo extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Contact: ${organization['contact'] ?? 'Not available'}'
-                    // decoration: InputDecoration(
-                    //   border: OutlineInputBorder(
-
-                    //   ),
-                    // ),
+                    'Contact: ${organization['contact'] ?? 'Not available'}',
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -68,10 +63,7 @@ class OrgInfo extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'About: ${organization['aboutOrg'] ?? 'Not available'}'
-                    // decoration: InputDecoration(
-                    //   border: OutlineInputBorder(),
-               //
+                    'About: ${organization['aboutOrg'] ?? 'Not available'}',
                   ),
                   SizedBox(height: 10),
                 ],
@@ -83,7 +75,9 @@ class OrgInfo extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DonationPage()),
+                    MaterialPageRoute(
+                      builder: (context) => DonationPage(organizationId: organization['id']),
+                    ),
                   );
                 },
                 style: ElevatedButton.styleFrom(

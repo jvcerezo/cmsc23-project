@@ -15,4 +15,11 @@ class FirebaseDonationAPI {
   Stream<QuerySnapshot> getAllDonations() {
     return db.collection("donations").snapshots();
   }
+
+  Stream<QuerySnapshot> getDonationsByOrganization(String organizationId) {
+    return db
+        .collection("donations")
+        .where("organizationId", isEqualTo: organizationId)
+        .snapshots();
+  }
 }
