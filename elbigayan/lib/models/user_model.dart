@@ -9,6 +9,7 @@ class CustomUser {
   String orgName;
   String aboutOrg;
   String? proofOfLegitimacy; // Assuming the proof of legitimacy is stored as a URL
+  bool isAcceptingDonations;
 
   CustomUser({
     required this.id,
@@ -21,6 +22,7 @@ class CustomUser {
     required this.orgName,
     required this.aboutOrg,
     this.proofOfLegitimacy,
+    this.isAcceptingDonations = false,
   });
 
   factory CustomUser.fromMap(Map<String, dynamic> map) {
@@ -35,6 +37,7 @@ class CustomUser {
       orgName: map['orgName'],
       aboutOrg: map['aboutOrg'],
       proofOfLegitimacy: map['proofOfLegitimacy'],
+      isAcceptingDonations: map['isAcceptingDonations'],
     );
   }
 
@@ -50,6 +53,7 @@ class CustomUser {
       'orgName': orgName,
       'aboutOrg': aboutOrg,
       'proofOfLegitimacy': proofOfLegitimacy,
+      'isAcceptingDonations': isAcceptingDonations,
     };
   }
 }

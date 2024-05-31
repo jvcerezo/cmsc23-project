@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import '../api/firebase_auth_api.dart' as firebase_api;
-import '../models/user_model.dart'; // Import the user model
+import '../models/user_model.dart'; 
 
 class UserAuthProvider with ChangeNotifier {
-  late firebase_api.FirebaseAuthApi authService; // Use the prefix here
+  late firebase_api.FirebaseAuthApi authService; 
   late Stream<firebase_auth.User?> _uStream;
   String? _userRole;
-  CustomUser? _customUser; // Add a custom user field
+  CustomUser? _customUser; 
 
   UserAuthProvider(){
     authService = firebase_api.FirebaseAuthApi();
@@ -18,17 +18,17 @@ class UserAuthProvider with ChangeNotifier {
   Stream<firebase_auth.User?> get userStream => _uStream;
   firebase_auth.User? get user => authService.getUser();
   String? get userRole => _userRole;
-  CustomUser? get customUser => _customUser; // Add a getter for the custom user
+  CustomUser? get customUser => _customUser; 
 
   void fetchAuthentication() {
     _uStream = authService.userSignedIn();
     _uStream.listen((user) async {
       if (user != null) {
-        await fetchUserRole(user.uid); // Fetch user role when auth state changes
-        await fetchCustomUser(user.uid); // Fetch custom user data when auth state changes
+        await fetchUserRole(user.uid); 
+        await fetchCustomUser(user.uid); 
       } else {
-        _userRole = null; // Reset role to null when user signs out
-        _customUser = null; // Reset custom user to null when user signs out
+        _userRole = null; 
+        _customUser = null; 
       }
       notifyListeners();
     });
@@ -53,11 +53,11 @@ class UserAuthProvider with ChangeNotifier {
           String downloadURL = await authService.uploadProofOfLegitimacy(userId, File(additionalData['proofOfLegitimacy']));
           additionalData['proofOfLegitimacy'] = downloadURL;
         } catch (e) {
-          // Handle the error, maybe set a fallback URL or notify the user
           additionalData['proofOfLegitimacy'] = null;
         }
       }
       additionalData['isApproved'] = role == 'Organization' ? false : true;
+      additionalData['isAcceptingDonations'] = role == 'Organization' ? false : true;
       await authService.setUserRole(userId, role, additionalData);
       notifyListeners();
     }

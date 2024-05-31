@@ -15,7 +15,8 @@ class FirebaseAuthApi {
       'id': uid,
       'role': role,
       ...additionalData,
-      if (role == 'Organization') 'isApproved': false
+      if (role == 'Organization') 'isApproved': false,
+      if (role == 'Organization') 'isAcceptingDonations': false,
     });
   }
 
