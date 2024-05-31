@@ -3,19 +3,8 @@ import 'package:elbigayan/pages/Donor/donation_page.dart';
 import 'package:elbigayan/providers/organization_provider.dart';
 import 'package:provider/provider.dart';
 
-class OrgInfo extends StatefulWidget {
+class OrgInfo extends StatelessWidget {
   const OrgInfo({Key? key}) : super(key: key);
-
-  @override
-  State<OrgInfo> createState() => _OrgInfoState();
-}
-
-class _OrgInfoState extends State<OrgInfo> {
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<OrganizationProvider>(context, listen: false).fetchCurrentOrganization();
-  }
 
   @override
   Widget build(BuildContext context) {

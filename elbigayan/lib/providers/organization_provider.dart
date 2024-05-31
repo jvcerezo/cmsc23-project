@@ -6,10 +6,12 @@ class OrganizationProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   List<Map<String, dynamic>> _organizations = [];
+  List<Map<String, dynamic>> _approvedOrganizations = [];
   Map<String, dynamic>? _currentOrganization;
 
   // Getters for the lists
   List<Map<String, dynamic>> get organizations => _organizations;
+  List<Map<String, dynamic>> get approvedOrganizations => _approvedOrganizations;
   Map<String, dynamic>? get currentOrganization => _currentOrganization;
 
   // Fetch pending organizations
@@ -20,6 +22,25 @@ class OrganizationProvider with ChangeNotifier {
           .where('isApproved', isEqualTo: false)
           .get();
       _organizations = snapshot.docs.map((doc) => {
+        'id': doc.id,
+        'orgName': doc['orgName'],
+        ...doc.data() as Map<String, dynamic>
+      }).toList();
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
+
+  // Fetch approved organizations
+  Future<void> fetchApprovedOrganizations() async {
+    try {
+      QuerySnapshot snapshot = await _db.collection('users')
+          .where('role', isEqualTo: 'Organization')
+          .where('isApproved', isEqualTo: true)
+          .get();
+      _approvedOrganizations = snapshot.docs.map((doc) => {
         'id': doc.id,
         'orgName': doc['orgName'],
         ...doc.data() as Map<String, dynamic>
@@ -74,5 +95,11 @@ class OrganizationProvider with ChangeNotifier {
       print(e);
       throw e;
     }
+  }
+
+  // Set the current organization based on the selected one
+  void setCurrentOrganization(Map<String, dynamic> organization) {
+    _currentOrganization = organization;
+    notifyListeners();
   }
 }

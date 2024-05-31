@@ -1,12 +1,16 @@
-import 'package:elbigayan/pages/Donor/org_details_page.dart';
 import 'package:flutter/material.dart';
+import 'package:elbigayan/pages/Donor/org_details_page.dart';
 import 'package:elbigayan/providers/organization_provider.dart';
 import 'package:provider/provider.dart';
 
 class OrganizationList extends StatelessWidget {
+  const OrganizationList({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
     var orgProvider = Provider.of<OrganizationProvider>(context);
-    var organizations = orgProvider.organizations;
+    var organizations = orgProvider.approvedOrganizations;
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -29,10 +33,12 @@ class OrganizationList extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   onTap: () {
-                    // to donation page
+                    // Set the current organization
+                    orgProvider.setCurrentOrganization(organizations[index]);
+                    // Navigate to organization details page
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context)=> OrgInfo()),
+                      MaterialPageRoute(builder: (context) => OrgInfo()),
                     );
                   },
                 ),
