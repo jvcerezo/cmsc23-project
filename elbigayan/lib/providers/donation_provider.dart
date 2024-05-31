@@ -13,6 +13,7 @@ class DonationProvider with ChangeNotifier {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
+
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   List<String> _donationItems = [];
@@ -34,7 +35,6 @@ class DonationProvider with ChangeNotifier {
     final donation = {
       'name': nameController.text,
       'weight': weightController.text,
-      'address': addressController.text,
       'date': _selectedDate?.toIso8601String(),
       'time': _selectedTime?.format(context),
       'items': _donationItems,
