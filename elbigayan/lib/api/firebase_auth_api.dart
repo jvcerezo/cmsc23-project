@@ -94,7 +94,7 @@ class FirebaseAuthApi {
   }
 
   String? getCurrentUserId() {
-    User? user = getUser();
+    firebase_auth.User? user = getUser();
     return user?.uid;
   }
 }

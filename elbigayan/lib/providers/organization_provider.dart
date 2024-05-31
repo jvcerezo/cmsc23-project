@@ -17,7 +17,7 @@ class OrganizationProvider with ChangeNotifier {
       _organizations = snapshot.docs.map((doc) => {
         'id': doc.id,
         'orgName': doc['orgName'],
-       // ...doc.data() as Map<String, dynamic>
+        ...doc.data() as Map<String, dynamic>
       }).toList();
       notifyListeners();
     } catch (e) {
