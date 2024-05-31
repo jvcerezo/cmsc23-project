@@ -61,11 +61,12 @@ class _DonationDetailsPageState extends State<DonationDetailsPage> {
               },
               children: [
                 _buildTableRow('User ID:', '${widget.donation.userID}'),
-                _buildTableRow('Category:', '${widget.donation.category}'),
-                _buildTableRow('Mode:', '${widget.donation.mode}'),
+                _buildTableRow('Address:', '${widget.donation.address}'),
+                _buildTableRow('Name:', '${widget.donation.name}'),
                 _buildTableRow('Weight:', '${widget.donation.weight}'),
-                _buildTableRow(
-                    'Delivery Time:', '${widget.donation.deliveryTime}'),
+                _buildTableRow('Delivery Time:', '${widget.donation.time}'),
+                _buildTableRow('Delivery Date:', '${widget.donation.date}'),
+                _buildTableRow('Items:', '${widget.donation.items}'),
               ],
             ),
             const SizedBox(

@@ -1,34 +1,48 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../models/user_model.dart'; // Import the user model
 
 class FirebaseAuthApi {
-  static final FirebaseAuth auth = FirebaseAuth.instance;
+  static final firebase_auth.FirebaseAuth auth = firebase_auth.FirebaseAuth.instance;
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
   static final FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<void> setUserRole(
       String uid, String role, Map<String, dynamic> additionalData) async {
     await firestore.collection('users').doc(uid).set({
+      'id': uid,
       'role': role,
       ...additionalData,
-      if (role == 'Organization') 'isApproved': false
+      if (role == 'Organization') 'isApproved': false,
+      if (role == 'Organization') 'isAcceptingDonations': false,
     });
   }
 
   Future<String?> getUserRole(String uid) async {
-    DocumentSnapshot snapshot =
-        await firestore.collection('users').doc(uid).get();
-    return snapshot.get('role');
+    DocumentSnapshot snapshot = await firestore.collection('users').doc(uid).get();
+    if (snapshot.exists) {
+      return snapshot.get('role');
+    } else {
+      return null;
+    }
   }
 
-  User? getUser() {
+  Future<CustomUser?> getCustomUser(String uid) async {
+    DocumentSnapshot snapshot = await firestore.collection('users').doc(uid).get();
+    if (snapshot.exists) {
+      return CustomUser.fromMap(snapshot.data() as Map<String, dynamic>);
+    }
+    return null;
+  }
+
+  firebase_auth.User? getUser() {
     return auth.currentUser;
   }
 
-  Stream<User?> userSignedIn() {
+  Stream<firebase_auth.User?> userSignedIn() {
     return auth.authStateChanges();
   }
 
@@ -37,7 +51,7 @@ class FirebaseAuthApi {
       await auth.signInWithEmailAndPassword(email: email, password: password);
       String? role = await getUserRole(auth.currentUser!.uid);
       return role;
-    } on FirebaseAuthException catch (e) {
+    } on firebase_auth.FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         return e.message;
       } else if (e.code == 'invalid-credential') {
@@ -48,14 +62,14 @@ class FirebaseAuthApi {
     }
   }
 
-  Future<UserCredential> signUp(String email, String password) async {
+  Future<firebase_auth.UserCredential> signUp(String email, String password) async {
     try {
-      UserCredential credential = await auth.createUserWithEmailAndPassword(
+      firebase_auth.UserCredential credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return credential;
-    } on FirebaseAuthException catch (e) {
+      return credential;  
+    } on firebase_auth.FirebaseAuthException catch (e) {
       print('Failed to sign up: ${e.code} ${e.message}');
       throw e;
     } catch (e) {
@@ -64,10 +78,12 @@ class FirebaseAuthApi {
     }
   }
 
-  Future<void> uploadProofOfLegitimacy(String uid, File proof) async {
+  Future<String> uploadProofOfLegitimacy(String uid, File proof) async {
     try {
-      final ref = storage.ref().child('proofs/$uid');
+      final ref = storage.ref().child('proofs/$uid/${proof.path.split('/').last}');
       await ref.putFile(proof);
+      String downloadURL = await ref.getDownloadURL();
+      return downloadURL;
     } catch (e) {
       throw e;
     }
@@ -78,7 +94,7 @@ class FirebaseAuthApi {
   }
 
   String? getCurrentUserId() {
-    User? user = getUser();
+    firebase_auth.User? user = getUser();
     return user?.uid;
   }
 }

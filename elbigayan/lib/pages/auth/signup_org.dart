@@ -97,7 +97,7 @@ class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
                       hintText: "Enter a valid email"),
                     onSaved: (value) => email = value,
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                         return "Please enter a valid email format";
                       }
                       return null;
@@ -114,8 +114,8 @@ class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
                     obscureText: true,
                     onSaved: (value) => password = value,
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a valid password";
+                      if (value == null || value.isEmpty || value.length < 8) {
+                        return "Password must be at least 8 characters long";
                       }
                       return null;
                     },
@@ -148,6 +148,8 @@ class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your contact number";
+                      } else if (!RegExp(r'^09\d{9}$').hasMatch(value)) {
+                        return "Contact number must start with 09 and be 11 digits long";
                       }
                       return null;
                     },
@@ -194,20 +196,20 @@ class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       try {
+                        Map<String, dynamic> additionalData = {
+                          'name': name,
+                          'username': username,
+                          'address': address,
+                          'contactNo': contactNo,
+                          'orgName': orgName,
+                          'aboutOrg': aboutOrg,
+                          'proofOfLegitimacy': proofOfLegitimacy?.path,
+                        };
                         await context.read<UserAuthProvider>().signUp(
                           email!, 
                           password!, 
                           'Organization',
-                          additionalData: {
-                            'name': name,
-                            'username': username,
-                            'address': address,
-                            'contactNo': contactNo,
-                            'orgName': orgName,
-                            'aboutOrg': aboutOrg,
-                            'proofOfLegitimacy': proofOfLegitimacy?.path,
-                            'isApproved': false,
-                          },
+                          additionalData: additionalData,
                         );
                         Navigator.of(context).pushNamed('/login');
                       } on FirebaseAuthException catch (e) {

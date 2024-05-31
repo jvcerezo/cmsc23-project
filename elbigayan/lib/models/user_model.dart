@@ -1,28 +1,43 @@
-class User {
+class CustomUser {
   String id;
   String name;
   String username;
   String contactNo;
   String address;
-  bool isOrganization;
+  bool isApproved;
+  String role;
+  String orgName;
+  String aboutOrg;
+  String? proofOfLegitimacy; // Assuming the proof of legitimacy is stored as a URL
+  bool isAcceptingDonations;
 
-  User({
+  CustomUser({
     required this.id,
     required this.name,
     required this.username,
     required this.contactNo,
     required this.address,
-    required this.isOrganization,
+    required this.isApproved,
+    required this.role,
+    required this.orgName,
+    required this.aboutOrg,
+    this.proofOfLegitimacy,
+    this.isAcceptingDonations = false,
   });
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
+  factory CustomUser.fromMap(Map<String, dynamic> map) {
+    return CustomUser(
       id: map['id'],
       name: map['name'],
       username: map['username'],
       contactNo: map['contactNo'],
       address: map['address'],
-      isOrganization: map['isOrganization'],
+      isApproved: map['isApproved'],
+      role: map['role'],
+      orgName: map['orgName'],
+      aboutOrg: map['aboutOrg'],
+      proofOfLegitimacy: map['proofOfLegitimacy'],
+      isAcceptingDonations: map['isAcceptingDonations'],
     );
   }
 
@@ -33,7 +48,12 @@ class User {
       'username': username,
       'contactNo': contactNo,
       'address': address,
-      'isOrganization': isOrganization,
+      'isApproved': isApproved,
+      'role': role,
+      'orgName': orgName,
+      'aboutOrg': aboutOrg,
+      'proofOfLegitimacy': proofOfLegitimacy,
+      'isAcceptingDonations': isAcceptingDonations,
     };
   }
 }

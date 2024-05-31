@@ -25,6 +25,7 @@ class Organization {
       isApproved: map['isApproved'],
       isAcceptingDonations: map['isAcceptingDonations'],
       proofs: List<String>.from(map['proofs']),
+      donationIDs: List<String>.from(map['donationIDs']),
     );
   }
 
@@ -36,6 +37,7 @@ class Organization {
       'isApproved': isApproved,
       'isAcceptingDonations': isAcceptingDonations,
       'proofs': proofs,
+      'donationIDs': donationIDs,
     };
   }
 }

@@ -35,8 +35,8 @@ class DonationsListPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 var donation = data.docs[index];
                 return ListTile(
-                  title: Text(donation['donorName']),
-                  subtitle: Text('Weight: ${donation['donationWeight']} kg\nItems: ${donation['donationItems'].join(', ')}\nDate: ${donation['dateTime']}'),
+                  title: Text(donation['name']),
+                  subtitle: Text('Weight: ${donation['weight']} kg\nItems: ${donation['items'].join(', ')}\nDate: ${donation['time']} : ${donation['date']} : ${donation['address']}'),
                 );
               },
             );
