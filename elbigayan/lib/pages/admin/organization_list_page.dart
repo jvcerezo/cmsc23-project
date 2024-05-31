@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'donation_list_page.dart'; // Import the donations list page
 
 class OrganizationListPage extends StatelessWidget {
   const OrganizationListPage({super.key});
@@ -48,12 +49,12 @@ class OrganizationListPage extends StatelessWidget {
                 child: ListTile(
                   tileColor: Colors.blue[50],
                   title: Text(
-                    organization['name'],
+                    organization['orgName'],
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   subtitle: Text(organization['username']),
                   onTap: () {
-                    // Navigate to organization detail or other related page
+                    Navigator.pushNamed(context, '/donations-list', arguments: organization.id); 
                   },
                 ),
               );

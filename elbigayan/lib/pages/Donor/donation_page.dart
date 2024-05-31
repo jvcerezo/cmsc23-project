@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:elbigayan/providers/donation_provider.dart';
 import 'package:elbigayan/widgets/donorDateTimeInputFields_widget.dart';
@@ -9,7 +10,9 @@ import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
 import 'package:elbigayan/widgets/donationImages_widget.dart';
 
 class DonationPage extends StatelessWidget {
-  const DonationPage({super.key});
+  final String organizationId;
+
+  const DonationPage({super.key, required this.organizationId});
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +59,11 @@ class DonationPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    await donationProvider.submitDonation(context);
+                    await donationProvider.submitDonation(context, organizationId);
                   },
                   child: const Text('Submit Donation'),
                 ),
               ),
-             
             ],
           ),
         ),

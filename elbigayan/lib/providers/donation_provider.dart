@@ -13,7 +13,6 @@ class DonationProvider with ChangeNotifier {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
-
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   List<String> _donationItems = [];
@@ -31,7 +30,12 @@ class DonationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> submitDonation(BuildContext context) async {
+  void fetchDonationsByOrganization(String organizationId) {
+    _donationStream = firebaseService.getDonationsByOrganization(organizationId);
+    notifyListeners();
+  }
+
+  Future<void> submitDonation(BuildContext context, String organizationId) async {
     // Generate a new document reference to get a unique ID
     final donationDocRef =
         FirebaseFirestore.instance.collection('donations').doc();
@@ -39,13 +43,15 @@ class DonationProvider with ChangeNotifier {
 
     // Create the donation object with the auto-generated ID
     final donation = {
-      'id': donationId, // Add the auto-generated ID
+      'id': donationId,
       'name': nameController.text,
       'weight': weightController.text,
       'date': _selectedDate?.toIso8601String(),
       'time': _selectedTime?.format(context),
       'items': _donationItems,
       'images': _uploadedImageUrls,
+      'organizationId': organizationId,
+      'address': addressController.text,
     };
 
     try {

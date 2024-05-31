@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DonationsListPage extends StatelessWidget {
-  const DonationsListPage({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final String organizationId = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -18,7 +18,10 @@ class DonationsListPage extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('donations').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('donations')
+              .where('organizationId', isEqualTo: organizationId)
+              .snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
@@ -29,6 +32,10 @@ class DonationsListPage extends StatelessWidget {
             }
 
             final data = snapshot.requireData;
+
+            if (data.size == 0) {
+              return const Center(child: Text("No donations found for this organization"));
+            }
 
             return ListView.builder(
               itemCount: data.size,

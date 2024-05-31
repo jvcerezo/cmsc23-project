@@ -9,12 +9,10 @@ class OrganizationProvider with ChangeNotifier {
   List<Map<String, dynamic>> _approvedOrganizations = [];
   Map<String, dynamic>? _currentOrganization;
 
-  // Getters for the lists
   List<Map<String, dynamic>> get organizations => _organizations;
   List<Map<String, dynamic>> get approvedOrganizations => _approvedOrganizations;
   Map<String, dynamic>? get currentOrganization => _currentOrganization;
 
-  // Fetch pending organizations
   Future<void> fetchPendingOrganizations() async {
     try {
       QuerySnapshot snapshot = await _db.collection('users')
@@ -33,7 +31,6 @@ class OrganizationProvider with ChangeNotifier {
     }
   }
 
-  // Fetch approved organizations
   Future<void> fetchApprovedOrganizations() async {
     try {
       QuerySnapshot snapshot = await _db.collection('users')
@@ -52,7 +49,6 @@ class OrganizationProvider with ChangeNotifier {
     }
   }
 
-  // Approve an organization
   Future<void> approveOrganization(String id) async {
     try {
       await _db.collection('users').doc(id).update({'isApproved': true});
@@ -64,7 +60,6 @@ class OrganizationProvider with ChangeNotifier {
     }
   }
 
-  // Fetch data for the currently logged-in organization
   Future<void> fetchCurrentOrganization() async {
     try {
       User? user = _auth.currentUser;
@@ -82,7 +77,6 @@ class OrganizationProvider with ChangeNotifier {
     }
   }
 
-  // Update isAcceptingDonations for the currently logged-in organization
   Future<void> updateAcceptingDonations(bool isAccepting) async {
     try {
       User? user = _auth.currentUser;
@@ -97,7 +91,6 @@ class OrganizationProvider with ChangeNotifier {
     }
   }
 
-  // Set the current organization based on the selected one
   void setCurrentOrganization(Map<String, dynamic> organization) {
     _currentOrganization = organization;
     notifyListeners();

@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
         '/organization-profile': (context) => const OrgProfilePage(),
         '/donor-home': (context) => const DonorHomePage(),
         '/donor-profile': (context) => const DonorProfilePage(),
-        '/donor-donation': (context) => const DonationPage(),
+        '/donor-donation': (context) => DonationPage(organizationId: ModalRoute.of(context)?.settings.arguments as String),
         '/admin': (context) => const AdminDashboard(),
         '/login': (context) => const SignInPage(),
         'scan-code': (context) => const ScanCodePage(),
@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
         '/approve-organization': (context) => const ApprovalPage(),
         '/signup-donor' : (context) => const SignUpDonorPage(),
         '/signup-organization' : (context) => const SignUpOrganizationPage(),
-        '/donations-list': (context) => const DonationsListPage(),
+        '/donations-list': (context) => DonationsListPage()
       },
     );
   }

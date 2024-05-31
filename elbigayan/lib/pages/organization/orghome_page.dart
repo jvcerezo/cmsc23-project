@@ -1,4 +1,5 @@
 import 'package:elbigayan/providers/donation_provider.dart';
+import 'package:elbigayan/providers/organization_provider.dart';
 import 'package:elbigayan/widgets/donationlist_widget.dart';
 import 'package:elbigayan/widgets/orgappdrawer_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +13,16 @@ class OrganizationHomePage extends StatefulWidget {
 }
 
 class _OrganizationHomePageState extends State<OrganizationHomePage> {
-
-   @override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Provider.of<DonationProvider>(context, listen: false).resetStream();
+    final organizationProvider = Provider.of<OrganizationProvider>(context, listen: false);
+    final donationProvider = Provider.of<DonationProvider>(context, listen: false);
+    final organization = organizationProvider.currentOrganization;
+
+    if (organization != null) {
+      donationProvider.fetchDonationsByOrganization(organization['id']);
+    }
   }
 
   @override
@@ -26,6 +32,7 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
       fontSize: 20.0,
       fontWeight: FontWeight.bold,
     );
+
     return Scaffold(
       drawer: const OrganizationAppDrawer(),
       appBar: AppBar(
@@ -37,8 +44,8 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        margin:  EdgeInsets.fromLTRB(30, 30, 30, 0),
-        child:  SingleChildScrollView(
+        margin: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -56,17 +63,13 @@ class _OrganizationHomePageState extends State<OrganizationHomePage> {
   }
 }
 
-
 class DonationListWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Wrap DonationDriveList with Consumer to rebuild when needed
     return Consumer<DonationProvider>(
       builder: (context, provider, _) {
-        // Return DonationDriveList with the latest data
         return DonationList(donationStream: provider.donation);
       },
     );
   }
 }
-
