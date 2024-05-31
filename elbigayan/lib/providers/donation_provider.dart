@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:elbigayan/api/donation_api.dart';
@@ -13,12 +16,14 @@ class DonationProvider with ChangeNotifier {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   List<String> _donationItems = [];
+  List<String> _uploadedImageUrls = [];
 
   DonationProvider() {
     fetchDonations();
   }
 
   Stream<QuerySnapshot> get donationStream => _donationStream;
+  List<String> get uploadedImageUrls => _uploadedImageUrls;
 
   void fetchDonations() {
     _donationStream = firebaseService.getAllDonations();
@@ -33,6 +38,7 @@ class DonationProvider with ChangeNotifier {
       'date': _selectedDate?.toIso8601String(),
       'time': _selectedTime?.format(context),
       'items': _donationItems,
+      'images': _uploadedImageUrls,
     };
 
     try {
@@ -55,6 +61,7 @@ class DonationProvider with ChangeNotifier {
     _selectedDate = null;
     _selectedTime = null;
     _donationItems = [];
+    _uploadedImageUrls = [];
     notifyListeners();
   }
 
@@ -71,6 +78,37 @@ class DonationProvider with ChangeNotifier {
   void updateDonationItems(List<String> items) {
     _donationItems = items;
     notifyListeners();
+  }
+
+  Future<void> pickAndUploadImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      try {
+        String imageUrl = await _uploadImageToFirebase(imageFile);
+        _uploadedImageUrls.add(imageUrl);
+        notifyListeners();
+      } catch (e) {
+        print("Error uploading image: $e");
+        throw Exception("Image upload failed: $e");
+      }
+    } else {
+      print("No image selected.");
+    }
+  }
+
+  Future<String> _uploadImageToFirebase(File imageFile) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref().child('donation_images/${DateTime.now().millisecondsSinceEpoch}');
+      final uploadTask = await storageRef.putFile(imageFile);
+      final downloadUrl = await uploadTask.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print("Upload error: $e");
+      throw Exception("Image upload failed: $e");
+    }
   }
 
   @override

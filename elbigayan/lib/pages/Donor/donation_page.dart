@@ -6,6 +6,7 @@ import 'package:elbigayan/widgets/donorInputFields_widget.dart';
 import 'package:elbigayan/widgets/donorAddressInputField_widget.dart';
 import 'package:elbigayan/widgets/donorModeofDelivery_widget.dart';
 import 'package:elbigayan/widgets/donorDonationItem_widget.dart';
+import 'package:elbigayan/widgets/donationImages_widget.dart';
 
 class DonationPage extends StatelessWidget {
   const DonationPage({super.key});
@@ -51,6 +52,7 @@ class DonationPage extends StatelessWidget {
                 onTimeSelected: donationProvider.updateTime,
               ),
               const SizedBox(height: 20),
+              DonationImages(),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -59,6 +61,7 @@ class DonationPage extends StatelessWidget {
                   child: const Text('Submit Donation'),
                 ),
               ),
+             
             ],
           ),
         ),
