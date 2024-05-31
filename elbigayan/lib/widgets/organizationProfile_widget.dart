@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/organization_provider.dart';
 
 class OrgProfile extends StatefulWidget {
   const OrgProfile({Key? key}) : super(key: key);
@@ -8,15 +10,23 @@ class OrgProfile extends StatefulWidget {
 }
 
 class _OrgProfileState extends State<OrgProfile> {
-  // Dummy data
-  String username = 'Organization';
-  String address = 'Batong Maliit Los Banos';
-  String contact = '123-456-7890';
-  bool isOnline = false;
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<OrganizationProvider>(context, listen: false).fetchCurrentOrganization();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Color? buttonColor = isOnline ? Colors.blue[500] : Colors.grey;
+    final organizationProvider = Provider.of<OrganizationProvider>(context);
+    final organization = organizationProvider.currentOrganization;
+
+    if (organization == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    bool isAcceptingDonations = organization['isAcceptingDonations'] ?? false;
+    Color? buttonColor = isAcceptingDonations ? Colors.blue[500] : Colors.grey;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +36,7 @@ class _OrgProfileState extends State<OrgProfile> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              username,
+              organization['orgName'] ?? 'Organization',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -34,15 +44,14 @@ class _OrgProfileState extends State<OrgProfile> {
             ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  isOnline = !isOnline;
-                });
+                bool newStatus = !isAcceptingDonations;
+                organizationProvider.updateAcceptingDonations(newStatus);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: buttonColor,
               ),
               child: Text(
-                isOnline ? 'Online' : 'Offline',
+                isAcceptingDonations ? 'Online' : 'Offline',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -52,13 +61,11 @@ class _OrgProfileState extends State<OrgProfile> {
           ],
         ),
         const SizedBox(height: 10),
-        Text('Address: $address'),
+        Text('Address: ${organization['address'] ?? 'Not available'}'),
         const SizedBox(height: 10),
-        Text('Contact: $contact'),
+        Text('Contact: ${organization['contact'] ?? 'Not available'}'),
         const SizedBox(height: 20),
-        Text(
-          "sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue mauris rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et netus et",
-        ),
+        Text('About: ${organization['aboutOrg'] ?? 'Not available'}'),
       ],
     );
   }
