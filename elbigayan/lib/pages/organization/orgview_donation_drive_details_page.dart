@@ -1,11 +1,44 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbigayan/models/donation_drive_model.dart';
-import 'package:elbigayan/pages/organization/scan_code_page.dart';
+import 'package:flutter/material.dart';
+import 'package:elbigayan/providers/donation_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:elbigayan/widgets/donationlist_widget.dart';
+import 'package:elbigayan/widgets/donationlistalertdialog_widget.dart';
 
-class DonationDriveDetailsPage extends StatelessWidget {
-  final DonationDrive donationDrive;
+class DonationDriveDetailsPage extends StatefulWidget {
+  DonationDrive donationDrive;
+  final String donationDriveId;
 
-  DonationDriveDetailsPage({required this.donationDrive});
+  DonationDriveDetailsPage({required this.donationDrive, required this.donationDriveId});
+
+  @override
+  State<DonationDriveDetailsPage> createState() => _DonationDriveDetailsPageState();
+}
+
+class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
+  Future<void> _refresh() async {
+    // Fetch fresh data from Firestore
+  try {
+    // Retrieve the donation drive data
+    DocumentSnapshot donationDriveSnapshot = await FirebaseFirestore.instance.collection('donationdrives').doc(widget.donationDriveId).get();
+    DonationDrive updatedDonationDrive = DonationDrive.fromJson(donationDriveSnapshot.data() as Map<String, dynamic>);
+
+    // Update the state or Provider with the new data
+    setState(() {
+      widget.donationDrive = updatedDonationDrive;
+    });
+  } catch (error) {
+    // Handle error
+    print("Error fetching data: $error");
+  }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<DonationProvider>(context, listen: false).resetStream();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +80,7 @@ class DonationDriveDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              donationDrive.title,
+              widget.donationDrive.title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             SizedBox(height: 30),
@@ -62,17 +95,37 @@ class DonationDriveDetailsPage extends StatelessWidget {
                   crossAxisSpacing: 3.0,
                   mainAxisSpacing: 3.0,
                 ),
-                itemCount: donationDrive.donationList.length,
+                itemCount: widget.donationDrive.donationList.length,
                 itemBuilder: (context, index) {
-                  String imageUrl = donationDrive.donationList[index].images[0];
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: NetworkImage(imageUrl),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                  String donationId = widget.donationDrive.donationList[index];
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('donations')
+                        .where('id', isEqualTo: donationId)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // or a placeholder widget
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return Text('No data found'); // or a placeholder widget
+                      }
+                      var donationData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                      List<String> images = List<String>.from(donationData['images'] ?? []);
+                      String imageUrl = images.isNotEmpty ? images[0] : ''; // Adjust field name based on your data structure
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                            image: NetworkImage(imageUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -84,9 +137,10 @@ class DonationDriveDetailsPage extends StatelessWidget {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (BuildContext context) {
-              return ScanCodePage();
-            },
+            builder: (context) => DonationListWrapper(
+              donationDriveId: widget.donationDriveId,
+              onDonationLinked: _refresh,
+            ),
           );
         },
         label: const Text(
@@ -100,6 +154,26 @@ class DonationDriveDetailsPage extends StatelessWidget {
         shape: const StadiumBorder(),
         backgroundColor: Colors.blue[900],
       ),
+    );
+  }
+}
+
+class DonationListWrapper extends StatelessWidget {
+  final String donationDriveId;
+  final VoidCallback onDonationLinked;
+
+  DonationListWrapper({required this.donationDriveId, required this.onDonationLinked});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<DonationProvider>(
+      builder: (context, provider, _) {
+        return DonationListAlertDialog(
+          donationStream: provider.donation,
+          donationDriveId: donationDriveId,
+          onDonationLinked: onDonationLinked,
+        );
+      },
     );
   }
 }

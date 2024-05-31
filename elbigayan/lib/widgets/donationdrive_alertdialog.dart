@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elbigayan/api/firebase_auth_api.dart';
 import 'package:elbigayan/api/firebase_donationdrive_api.dart';
-import 'package:elbigayan/models/donation_drive_model.dart'; 
+import 'package:elbigayan/models/donation_drive_model.dart';
 import 'package:flutter/material.dart';
 
 class AddDonationDrive extends StatelessWidget {
@@ -46,18 +47,27 @@ class AddDonationDrive extends StatelessWidget {
               return;
             }
 
+            final donationDriveDocRef =
+                FirebaseFirestore.instance.collection('donationdrives').doc();
+            final donationDriveId = donationDriveDocRef.id;
+
             DonationDrive newDrive = DonationDrive(
+              id: donationDriveId,
               title: title,
               userId: userId,
               donationList: [],
             );
 
-            String result = await firebaseApi.addDonationDrive(newDrive.toJson());
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+            String result =
+                await firebaseApi.addDonationDrive(newDrive.toJson());
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(result)));
             Navigator.of(context).pop();
           },
           style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]),
-          child: const Text('Add', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          child: const Text('Add',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
       ],
     );

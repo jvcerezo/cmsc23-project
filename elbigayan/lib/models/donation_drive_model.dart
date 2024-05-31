@@ -1,23 +1,22 @@
 import 'dart:convert';
-import 'package:elbigayan/models/donation_model.dart';
 
 class DonationDrive {
   String? id;
   String title;
   String userId;
-  List<Donation> donationList;
+  List<String> donationList; // Change the type to List<String>
 
   DonationDrive({this.id, required this.title, required this.userId, required this.donationList});
 
   factory DonationDrive.fromJson(Map<String, dynamic> json) {
-    var list = json['donationList'] as List;
-    List<Donation> donations = list.map((donation) => Donation.fromJson(donation)).toList();
+    // The donationList is now a list of strings
+    List<String> donationIds = List<String>.from(json['donationList'] as List<dynamic>);
 
     return DonationDrive(
       id: json['id'],
       title: json['title'],
       userId: json['userId'],
-      donationList: donations,
+      donationList: donationIds,
     );
   }
 
