@@ -105,7 +105,7 @@ class DonationList extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => DonationDetailsPage(donation: donation),
+                      builder: (context) => DonationDetailsPage(donation: donation,),
                     ),
                   );
                 },

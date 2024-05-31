@@ -1,12 +1,28 @@
+import 'package:elbigayan/providers/donation_provider.dart';
+import 'package:elbigayan/widgets/donationlist_widget.dart';
+import 'package:elbigayan/widgets/donationlistalertdialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:elbigayan/models/donation_drive_model.dart';
 import 'package:elbigayan/pages/organization/scan_code_page.dart';
+import 'package:provider/provider.dart';
 
-class DonationDriveDetailsPage extends StatelessWidget {
+class DonationDriveDetailsPage extends StatefulWidget {
   final DonationDrive donationDrive;
 
   DonationDriveDetailsPage({required this.donationDrive});
 
+  @override
+  State<DonationDriveDetailsPage> createState() => _DonationDriveDetailsPageState();
+}
+
+class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Provider.of<DonationProvider>(context, listen: false).resetStream();
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +63,7 @@ class DonationDriveDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              donationDrive.title,
+              widget.donationDrive.title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             SizedBox(height: 30),
@@ -62,9 +78,9 @@ class DonationDriveDetailsPage extends StatelessWidget {
                   crossAxisSpacing: 3.0,
                   mainAxisSpacing: 3.0,
                 ),
-                itemCount: donationDrive.donationList.length,
+                itemCount: widget.donationDrive.donationList.length,
                 itemBuilder: (context, index) {
-                  String imageUrl = donationDrive.donationList[index].images[0];
+                  String imageUrl = widget.donationDrive.donationList[index].images[0];
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
@@ -82,12 +98,10 @@ class DonationDriveDetailsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ScanCodePage();
-            },
-          );
+         showDialog(
+      context: context,
+      builder: (context) => DonationListWrapper(),
+    );
         },
         label: const Text(
           'Add',
@@ -100,6 +114,20 @@ class DonationDriveDetailsPage extends StatelessWidget {
         shape: const StadiumBorder(),
         backgroundColor: Colors.blue[900],
       ),
+    );
+  }
+}
+
+
+class DonationListWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Wrap DonationDriveList with Consumer to rebuild when needed
+    return Consumer<DonationProvider>(
+      builder: (context, provider, _) {
+        // Return DonationDriveList with the latest data
+        return DonationListAlertDialog(donationStream: provider.donation);
+      },
     );
   }
 }
