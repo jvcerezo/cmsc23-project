@@ -33,7 +33,6 @@ class DonationDriveList extends StatelessWidget {
           itemBuilder: (context, int index) {
             DocumentSnapshot doc = snapshot.data!.docs[index];
             DonationDrive donationDrive = DonationDrive.fromJson(doc.data() as Map<String, dynamic>);
-
             return Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 2),

@@ -1,21 +1,21 @@
 import 'package:elbigayan/pages/Donor/org_details_page.dart';
 import 'package:flutter/material.dart';
+import 'package:elbigayan/providers/organization_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrganizationList extends StatelessWidget {
-  final List<String> OrganizationNames;
-  const OrganizationList({Key? key, required this.OrganizationNames}) : super(key: key);
-
-  @override
   Widget build(BuildContext context) {
+    var orgProvider = Provider.of<OrganizationProvider>(context);
+    var organizations = orgProvider.organizations;
     return SingleChildScrollView(
       child: Column(
         children: [
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: OrganizationNames.length,
+            itemCount: organizations.length,
             itemBuilder: (BuildContext context, int index) {
-              String OrganizationName = OrganizationNames[index];
+              String organizationName = organizations[index]['orgName'];
               return Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black, width: 2),
@@ -25,7 +25,7 @@ class OrganizationList extends StatelessWidget {
                 child: ListTile(
                   tileColor: Colors.blue[50],
                   title: Text(
-                    "$OrganizationName",
+                    "$organizationName",
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   onTap: () {

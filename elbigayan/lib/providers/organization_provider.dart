@@ -5,6 +5,7 @@ class OrganizationProvider with ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   List<Map<String, dynamic>> _organizations = [];
 
+//get list of orgs
   List<Map<String, dynamic>> get organizations => _organizations;
 
   Future<void> fetchPendingOrganizations() async {
@@ -15,7 +16,8 @@ class OrganizationProvider with ChangeNotifier {
           .get();
       _organizations = snapshot.docs.map((doc) => {
         'id': doc.id,
-        ...doc.data() as Map<String, dynamic>
+        'orgName': doc['orgName'],
+       // ...doc.data() as Map<String, dynamic>
       }).toList();
       notifyListeners();
     } catch (e) {
