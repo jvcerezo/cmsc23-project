@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:elbigayan/widgets/organizationlist_widget.dart';
 import 'package:elbigayan/widgets/donorappdrawer_widget.dart';
+import 'package:elbigayan/providers/organization_provider.dart';
+import 'package:provider/provider.dart';
 
 class DonorHomePage extends StatefulWidget{
   const DonorHomePage({super.key});
@@ -10,19 +12,12 @@ class DonorHomePage extends StatefulWidget{
 }
 
 class _DonorHomePageState extends State<DonorHomePage>{
-  //Dummy data  
 
-  final List <String> orgNames =[
-    'Batong Malake Community Pantry',
-    'Madre de amor Hospice Foundation',
-    'Community Help Alternatives Inc',
-    'El danda Jeepney Drivers',
-    'Piston Jeepney Drivers',
-    'UPLB Learning Resource Center',
-    'UPLB Red Cross Youth',
-    'UPLB Vendors',
-    'UPLB BARKada && CATropa'
-  ];
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<OrganizationProvider>(context, listen: false).fetchPendingOrganizations();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -52,7 +47,7 @@ class _DonorHomePageState extends State<DonorHomePage>{
                 style:defaultTextStyle,
               ),
               const SizedBox(height:20),
-              OrganizationList(OrganizationNames:orgNames)
+              OrganizationList(),
             ],
           ),
         ),
