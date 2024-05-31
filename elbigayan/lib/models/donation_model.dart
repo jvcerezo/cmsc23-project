@@ -3,33 +3,37 @@ import 'dart:convert';
 class Donation {
   final int userID;
   String? id;
-  String category;
-  String mode;
   double weight;
-  String deliveryTime;
+  String name;
+  String address;
+  String date;
+  String time;
+  List<String> items;
   String imageUrl;
-  // String address;
-  // String contact;
-  // String status;
 
   Donation(
       {required this.userID,
       this.id,
-      required this.category,
-      required this.mode,
       required this.weight,
-      required this.deliveryTime,
-      required this.imageUrl});
+      required this.name,
+      required this.address,
+      required this.date,
+      required this.time,
+      required this.items,
+      required this.imageUrl
+      });
 
   factory Donation.fromJson(Map<String, dynamic> json) {
     return Donation(
         userID: json['userID'],
         id: json['id'],
-        category: json['category'],
-        mode: json['mode'],
         weight: json['weight'],
-        deliveryTime: json['deliveryTime'],
-        imageUrl: json['imageUrl']);
+        name: json['name'],
+        address: json['address'],
+        date: json['date'],
+        time: json['time'],
+        imageUrl: json['imageUrl'],
+        items: json['items']);
   }
 
   static List<Donation> fromJsonArray(String jsonData) {
@@ -41,10 +45,12 @@ class Donation {
     return {
       'userID': donation.userID,
       'id': donation.id,
-      'category': donation.category,
-      'mode': donation.mode,
-      'weight': donation.mode,
-      'deliveryTime': donation.deliveryTime,
+      'weight': donation.weight,
+      'name': donation.name,
+      'address': donation.address,
+      'date': donation.date,
+      'time': donation.time,
+      'items': donation.items,
       'imageUrl': donation.imageUrl
     };
   }
