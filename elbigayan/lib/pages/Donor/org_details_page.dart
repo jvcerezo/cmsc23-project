@@ -66,7 +66,7 @@ class _OrgInfoState extends State<OrgInfo> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Address: ${organization['address'] ?? 'Not available'}',
+                    'Contact: ${organization['contact'] ?? 'Not available'}'
                     // decoration: InputDecoration(
                     //   border: OutlineInputBorder(
 
@@ -79,10 +79,10 @@ class _OrgInfoState extends State<OrgInfo> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Contact: ${organization['contact'] ?? 'Not available'}',
+                    'About: ${organization['aboutOrg'] ?? 'Not available'}'
                     // decoration: InputDecoration(
                     //   border: OutlineInputBorder(),
-                    // ),
+               //
                   ),
                   SizedBox(height: 10),
                 ],
