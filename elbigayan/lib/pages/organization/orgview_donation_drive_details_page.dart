@@ -22,7 +22,7 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
     super.initState();
     Provider.of<DonationProvider>(context, listen: false).resetStream();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,8 +81,11 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
                 itemCount: widget.donationDrive.donationList.length,
                 itemBuilder: (context, index) {
                   String donationId = widget.donationDrive.donationList[index];
-                  return FutureBuilder<DocumentSnapshot>(
-                    future: FirebaseFirestore.instance.collection('donations').doc(donationId).get(),
+                  return FutureBuilder<QuerySnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection('donations')
+                        .where('id', isEqualTo: donationId)
+                        .get(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator(); // or a placeholder widget
@@ -90,11 +93,11 @@ class _DonationDriveDetailsPageState extends State<DonationDriveDetailsPage> {
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      if (!snapshot.hasData || !snapshot.data!.exists) {
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                         return Text('No data found'); // or a placeholder widget
                       }
-                      var donationData = snapshot.data!.data() as Map<String, dynamic>;
-                      List<String> images = donationData['images'];
+                      var donationData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                      List<String> images = List<String>.from(donationData['images'] ?? []);
                       String imageUrl = images.isNotEmpty ? images[0] : ''; // Adjust field name based on your data structure
                       return Container(
                         decoration: BoxDecoration(
@@ -144,7 +147,10 @@ class DonationListWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DonationProvider>(
       builder: (context, provider, _) {
-        return DonationListAlertDialog(donationStream: provider.donation, donationDriveId: donationDriveId);
+        return DonationListAlertDialog(
+          donationStream: provider.donation,
+          donationDriveId: donationDriveId,
+        );
       },
     );
   }
