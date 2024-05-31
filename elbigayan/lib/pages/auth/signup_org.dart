@@ -160,6 +160,7 @@ class _SignUpOrganizationPageState extends State<SignUpOrganizationPage> {
                     onPressed: _pickProofOfLegitimacy,
                     child: Text(proofOfLegitimacy == null ? "Upload Proof of Legitimacy" : "Proof Selected"),
                   ),
+                      SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
