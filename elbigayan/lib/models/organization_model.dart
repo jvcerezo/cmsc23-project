@@ -5,6 +5,7 @@ class Organization {
   bool isApproved;
   bool isAcceptingDonations;
   List<String> proofs;
+  List<String> donationIDs;
 
   Organization({
     required this.id,
@@ -13,6 +14,7 @@ class Organization {
     required this.isApproved,
     required this.isAcceptingDonations,
     required this.proofs,
+    required this.donationIDs,
   });
 
   factory Organization.fromMap(Map<String, dynamic> map) {
