@@ -22,7 +22,7 @@ class DonationProvider with ChangeNotifier {
     fetchDonations();
   }
 
-  Stream<QuerySnapshot> get donationStream => _donationStream;
+  Stream<QuerySnapshot> get donation => _donationStream;
   List<String> get uploadedImageUrls => _uploadedImageUrls;
 
   void fetchDonations() {
@@ -118,4 +118,9 @@ class DonationProvider with ChangeNotifier {
     addressController.dispose();
     super.dispose();
   }
+
+  void resetStream() {
+    fetchDonations(); // Re-fetch the donations to reset the stream
+  }
+
 }

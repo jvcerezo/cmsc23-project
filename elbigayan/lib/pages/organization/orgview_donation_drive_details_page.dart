@@ -64,7 +64,7 @@ class DonationDriveDetailsPage extends StatelessWidget {
                 ),
                 itemCount: donationDrive.donationList.length,
                 itemBuilder: (context, index) {
-                  String imageUrl = donationDrive.donationList[index].imageUrl;
+                  String imageUrl = donationDrive.donationList[index].images[0];
                   return Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
